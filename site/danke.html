@@ -32,10 +32,14 @@
 <main>
 <div class="wrap legal" style="text-align:center"><img src="/assets/img/daumen.webp" alt="" width="150">
 <h1 style="margin:14px 0">Danke für deine Bestellung!</h1>
-<p class="lead" data-danke>Deine Zahlung ist eingegangen. Den Download-Link und die Rechnung bekommst du per E-Mail.</p>
+<p class="lead" data-danke>Deine Zahlung ist eingegangen. Hier geht es direkt zu deinen Dateien:</p>
+<p><a class="btn green" data-dl href="#" style="font-size:20px">Zu deinen Downloads</a></p>
+<p class="small muted">Der Link gilt 30 Tage. Speichere ihn dir am besten als Lesezeichen. Die Rechnung kommt per E-Mail.</p>
 <p class="small muted">Keine Mail da? Schau bitte im Spam-Ordner nach oder schreib an <a href="mailto:kontakt@bildungsmanufaktur.shop">kontakt@bildungsmanufaktur.shop</a>.</p>
 <p style="margin-top:20px"><a class="btn" href="/materialien.html">Weiter stöbern</a></p></div>
-<script>try{localStorage.removeItem('bm-warenkorb')}catch(e){}</script></main>
+<script>try{localStorage.removeItem('bm-warenkorb')}catch(e){}
+var sid=new URLSearchParams(location.search).get('session_id');var a=document.querySelector('[data-dl]');
+if(sid&&/^cs_(test|live)_[A-Za-z0-9]+$/.test(sid)){a.href='https://bm-downloads.lukas-jaskolka.workers.dev/d/'+sid;}else{a.parentNode.style.display='none';}</script></main>
 <footer class="site-foot">
 <div class="wrap cols">
 <div class="brand"><span><img src="/assets/img/logo_quer.webp" alt="Bildungsmanufaktur" width="900" height="339"></span><p style="margin:0">Unterrichtsmaterial mit Köpfchen – für Klasse 1 bis 13.</p></div>

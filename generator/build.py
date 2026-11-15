@@ -280,7 +280,7 @@ for m in P:
             f'<button type="button" data-thumb="{f}" aria-label="{E(l)}" aria-pressed="{"true" if i == 0 else "false"}"><img src="{f}" alt="" loading="lazy"></button>'
             for i, (f, l) in enumerate(bilder)) + '</div>'
     if m['gratis']:
-        kauf = f'<div class="info-box"><b>Kostenlos</b>Der Gratis-Download hier startet zusammen mit dem Shop. Bis dahin bekommst du das Material kostenlos auf <a href="https://eduki.com/de/material/{m["eduki"]}" rel="noopener">eduki</a>.</div>'
+        kauf = f'<div class="info-box"><b>Kostenlos</b>Einfach herunterladen und loslegen – ohne Anmeldung.</div><p><a class="btn green" href="https://bm-downloads.lukas-jaskolka.workers.dev/gratis/{m["eduki"]}" rel="nofollow">Gratis herunterladen</a></p>'
     else:
         kauf = f'''<fieldset class="lic"><legend>Lizenz wählen</legend>
 <label><input type="radio" name="lizenz" value="Einzellizenz" checked><span><span class="n">Einzellizenz</span><span class="d">Für dich und deine eigenen Klassen</span></span><span class="p">{euro(m["preis"])}</span></label>
@@ -402,10 +402,14 @@ page('widerruf.html', 'Vertrag widerrufen', 'Vertrag widerrufen – Bildungsmanu
 
 body = '''<div class="wrap legal" style="text-align:center"><img src="/assets/img/daumen.webp" alt="" width="150">
 <h1 style="margin:14px 0">Danke für deine Bestellung!</h1>
-<p class="lead" data-danke>Deine Zahlung ist eingegangen. Den Download-Link und die Rechnung bekommst du per E-Mail.</p>
+<p class="lead" data-danke>Deine Zahlung ist eingegangen. Hier geht es direkt zu deinen Dateien:</p>
+<p><a class="btn green" data-dl href="#" style="font-size:20px">Zu deinen Downloads</a></p>
+<p class="small muted">Der Link gilt 30 Tage. Speichere ihn dir am besten als Lesezeichen. Die Rechnung kommt per E-Mail.</p>
 <p class="small muted">Keine Mail da? Schau bitte im Spam-Ordner nach oder schreib an <a href="mailto:kontakt@bildungsmanufaktur.shop">kontakt@bildungsmanufaktur.shop</a>.</p>
 <p style="margin-top:20px"><a class="btn" href="/materialien.html">Weiter stöbern</a></p></div>
-<script>try{localStorage.removeItem('bm-warenkorb')}catch(e){}</script>'''
+<script>try{localStorage.removeItem('bm-warenkorb')}catch(e){}
+var sid=new URLSearchParams(location.search).get('session_id');var a=document.querySelector('[data-dl]');
+if(sid&&/^cs_(test|live)_[A-Za-z0-9]+$/.test(sid)){a.href='https://bm-downloads.lukas-jaskolka.workers.dev/d/'+sid;}else{a.parentNode.style.display='none';}</script>'''
 page('danke.html', 'Danke für deine Bestellung', 'Bestellung abgeschlossen', body)
 fk = {m['id']: {'titel': m['titel'], 'preis': m['preis'], 'schul': m['schul'], 'eduki': m['eduki']} for m in P if not m['gratis']}
 _fd = os.path.join(os.path.dirname(OUT), 'netlify', 'functions')
