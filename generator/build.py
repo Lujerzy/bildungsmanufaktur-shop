@@ -117,10 +117,11 @@ FOOT = '''</main>
 </div>
 <div class="wrap bottom"><span>© 2026 Bildungsmanufaktur · Lukas Jaskolka</span><span>Alle Preise sind Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</span></div>
 </footer>
-<script src="/assets/js/site.js?v=' + VER + '" defer></script>
+<script src="/assets/js/site.js?v={VER}" defer></script>
 </body>
 </html>
 '''
+FOOT = FOOT.replace('{VER}', VER)
 
 
 def page(path, title, desc, body, active='', extra=''):
