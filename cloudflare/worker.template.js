@@ -35,14 +35,15 @@ export default {
       const s = await sitzung(env, teile[1]);
       if (!s) return seite('Nicht gefunden', '<h1>Dieser Download-Link ist ungültig.</h1><p>Bitte prüfe den Link aus deiner E-Mail oder schreib mir.</p>', 404);
       if (s.abgelaufen) return seite('Abgelaufen', `<h1>Dieser Download-Link ist abgelaufen.</h1><p>Links gelten ${TAGE} Tage. Schreib mir kurz, dann schicke ich dir einen neuen.</p>`, 410);
-      const li = s.ids.map((id) => `<li><b>${esc(MANIFEST.titel[id] || id)}</b><br>${(MANIFEST.dateien[id] || []).map((k) => `<a class="btn" href="/f/${teile[1]}/${encodeURIComponent(k)}">${esc(k.split('/').pop())}</a>`).join(' ') || '<small>Datei folgt per E-Mail.</small>'}</li>`).join('');
+      const listen = await Promise.all(s.ids.map((id) => dateien(env, id)));
+      const li = s.ids.map((id, n) => `<li><b>${esc(MANIFEST.titel[id] || id)}</b><br>${listen[n].map((k) => `<a class="btn" href="/f/${teile[1]}/${encodeURIComponent(k)}">${esc(k.split('/').pop())}</a>`).join(' ') || '<small>Datei folgt per E-Mail.</small>'}</li>`).join('');
       return seite('Deine Downloads', `<h1>Deine Downloads</h1><p>Danke für deinen Kauf! Hier kannst du deine Materialien herunterladen. Der Link gilt ${TAGE} Tage.</p><ul>${li}</ul>`);
     }
     if (teile[0] === 'f' && teile[1] && teile[2]) {
       const key = decodeURIComponent(teile.slice(2).join('/'));
       const s = await sitzung(env, teile[1]);
       if (!s || s.abgelaufen) return seite('Kein Zugriff', '<h1>Kein Zugriff.</h1>', 403);
-      const erlaubt = s.ids.some((id) => (MANIFEST.dateien[id] || []).includes(key));
+      const erlaubt = s.ids.some((id) => key.startsWith(id + '_'));
       if (!erlaubt) return seite('Kein Zugriff', '<h1>Kein Zugriff.</h1>', 403);
       return datei(env, key);
     }
@@ -51,15 +52,20 @@ export default {
       if (!MANIFEST.gratis.includes(id)) return seite('Nicht gefunden', '<h1>Nicht gefunden.</h1>', 404);
       if (teile[2]) {
         const key = decodeURIComponent(teile.slice(2).join('/'));
-        if (!(MANIFEST.dateien[id] || []).includes(key)) return seite('Nicht gefunden', '<h1>Nicht gefunden.</h1>', 404);
+        if (!key.startsWith(id + '_')) return seite('Nicht gefunden', '<h1>Nicht gefunden.</h1>', 404);
         return datei(env, key);
       }
-      const links = (MANIFEST.dateien[id] || []).map((k) => `<a class="btn" href="/gratis/${id}/${encodeURIComponent(k)}">${esc(k.split('/').pop())}</a>`).join(' ');
+      const links = (await dateien(env, id)).map((k) => `<a class="btn" href="/gratis/${id}/${encodeURIComponent(k)}">${esc(k.split('/').pop())}</a>`).join(' ');
       return seite('Gratis-Download', `<h1>${esc(MANIFEST.titel[id] || 'Gratis-Download')}</h1><p>Viel Freude damit!</p><p>${links}</p>`);
     }
     return Response.redirect(SHOP, 302);
   },
 };
+
+async function dateien(env, id) {
+  const r = await env.BUCKET.list({ prefix: id + '_', limit: 100 });
+  return r.objects.map((o) => o.key).sort();
+}
 
 async function datei(env, key) {
   const o = await env.BUCKET.get(key);
