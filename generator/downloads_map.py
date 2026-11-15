@@ -1,0 +1,109 @@
+"""Zuordnung eduki-ID -> Dateien in iCloud (Bildungsmanufaktur/...).
+Eintrag: (Ordner-Teilstring, Datei-Filter oder None, sicher?)  – Filter = Teilstring im Dateinamen.
+Logo-neu-Fassungen (_Logo neu (zum Hochladen)/...) werden bevorzugt, wenn vorhanden."""
+D = 'Saisonpakete/12 Dezember/'
+G, M, W, J = D + '1 Grundschule/', D + '2 Klasse 5-6/', D + '3 Wissensblätter/', D + '2b Klasse 7-8/'
+I = '6 Fächer/04 Sachunterricht/Grundschule/Insekten/'
+WT = '6 Fächer/04 Sachunterricht/Grundschule/Waldtiere/'
+R = '4 Rätselpakete/'
+V = '1 Verbraucherbildung (Kl. 5–10)/'
+S = '7 Schuljahr & Anlässe/'
+MAP = {
+ # Dezember Grundschule
+ '2428096': (G + 'G1 – Ausmalbilder Weihnachten', None, 1), '2429428': (G + 'G2 – Ausmalbilder Nikolaus', None, 1),
+ '2430539': (G + 'G3 – Weihnachts-Mandalas', None, 1), '2432334': (G + 'G4 – Weihnachts-Suchsel', None, 1),
+ '2435389': (G + 'G5 – Suchsel-Set', None, 1), '2435408': (G + 'G6 – Kreuzworträtsel leicht', None, 1),
+ '2435428': (G + 'G7 – Weihnachts-Labyrinthe', None, 1), '2435438': (G + 'G8 – Bild-Sudoku', None, 1),
+ '2435867': (G + 'G9 – Geheimschrift Weihnachten', None, 1), '2435915': (G + 'G10 – Weihnachts-Bingo', None, 1),
+ '2435973': (G + 'G11 – Wimmelbild', None, 1), '2436182': (G + 'G12 – Schattenbilder', None, 1),
+ '2436197': (G + 'G13 – Weihnachts-Merkspiel', None, 1), '2436270': (G + 'G14 – Geschenkanhänger', None, 1),
+ '2436291': (G + 'G15 – Christbaumanhänger', None, 1), '2436306': (G + 'G16 – Fensterbilder', None, 1),
+ '2436388': (G + 'G17 – Silbenrätsel', None, 1), '2437422': (G + 'G18 – Wunschzettel', None, 1),
+ '2437426': (G + 'G19 – Elfchen', None, 1), '2437427': (G + 'G20 – Urkunden', None, 1),
+ '2437429': (G + 'G21 – Kooperativer Christbaum', None, 1), '2437430': (G + 'G22 – Weihnachts-Klappkarten', None, 1),
+ '2437431': (G + 'G23 – Stadt, Land', None, 1), '2437432': (G + 'G24 – Fantasie-Zeichnen', None, 1),
+ '2437941': (G + 'A1 – Bewegter Adventskalender', None, 1), '2437963': (G + 'F1 – Ausmalbilder Silvester', None, 1),
+ # Dezember 5/6
+ '2437419': (M + 'M1 – Escape-Room', None, 1), '2437436': (M + 'M2 – Weihnachts-Logicals', None, 1),
+ '2437439': (M + 'M3 – Kreuzworträtsel schwer', None, 1), '2436423': (M + 'M4 – Weihnachts-Erklärspiel', None, 1),
+ '2437433': (M + 'M5 – Wer bin ich', None, 1), '2437440': (M + 'M6 – Weihnachtsmathe', None, 1),
+ '2437441': (M + 'M7 – Plätzchenrezept', None, 1), '2437442': (M + 'M8 – Christmas vocabulary', None, 1),
+ '2437443': (M + 'M9 – Weihnachts-Sudoku', None, 1), '2437444': (M + 'M10 – Weihnachtsquiz', None, 1),
+ '2437445': (M + 'M11 – Wichteln', None, 1), '2437447': (M + 'M12 – Jahresrückblick', None, 1),
+ '2437448': (M + 'M13 – Adventskalender Mini-Spiele', None, 1), '2437449': (M + 'M14 – So waren meine Weihnachtsferien', None, 1),
+ # Wissensblätter
+ '2437590': (W + 'W1 – Was ist Advent', None, 1), '2437544': (W + 'W2 – Woher kommt der Adventskranz', None, 1),
+ '2437545': (W + 'W3 – Barbaratag', None, 1), '2437548': (W + 'W4 – Wer war der heilige Nikolaus', None, 1),
+ '2437550': (W + 'W5 – Nikolaus, Weihnachtsmann', None, 1), '2437556': (W + 'W6 – Was feiern wir', None, 1),
+ '2437551': (W + 'W7 – Woher kommt der Weihnachtsbaum', None, 1), '2437553': (W + 'W8 – Mein Dezember-Lexikon', None, 1),
+ '2437557': (W + 'W9 – Luciafest', None, 1), '2437572': (W + 'W10 – Wintersonnenwende', None, 1),
+ '2437559': (W + 'W11 – Weihnachten in anderen Ländern', None, 1), '2437558': (W + 'W12 – Chanukka', None, 1),
+ '2437591': (W + 'W13 – Woher kommt Silvester', None, 1), '2437560': (W + 'W14 – Glücksbringer', None, 1),
+ '2437573': (W + 'W15 – Neujahr weltweit', None, 1), '2437575': (W + 'W16 – Heilige Drei Könige', None, 1),
+ '2437576': (W + 'W17 – Dezember-Quiz', None, 1), '2437977': (W + 'W18 – Silvester und Neujahr', None, 1),
+ '2437592': (W + 'K1 – Saturnalien', None, 1), '2437578': (W + 'K2 – Warum feiern wir am 25', None, 1),
+ '2437579': (W + 'K3 – Weihnachten im Wandel', None, 1), '2437581': (W + 'K4 – Weihnachtsfrieden', None, 1),
+ '2437583': (W + 'K5 – Julianisch', None, 1), '2437584': (W + 'K6 – Lichterfeste', None, 1),
+ '2437585': (W + 'K7 – Weihnachten und Konsum', None, 1), '2437586': (W + 'K8 – Dezember-Escape', None, 1),
+ # 7/8
+ '2438000': (J + 'F2 – Winter-Suchsel', None, 1), '2437987': (J + 'J1 – Winter-Logicals', None, 1),
+ # Herbst & Halloween & Frühling/Ostern/Mai
+ '2234669': ('A – Herbst-Tier-Quiz Kl. 2-3', None, 1), '2236380': ('A – Herbst-Tier-Quiz Kl. 4-5', None, 1),
+ '2232695': ('A – Herbstquiz Kl. 1-2', None, 1), '2228762': ('A – Herbst Kreuzworträtsel', None, 1),
+ '2232334': ('G1 – Ausmalbilder Halloween', 'Klasse 1', 1), '2232379': ('G1 – Ausmalbilder Halloween', 'Klasse 3', 1),
+ '2228573': ('G1 – Ausmalbilder Herbst', 'Ausmalbilder Herbst.pdf', 1), '2228798': ('G1 – Ausmalbilder Herbst', 'Klasse 3', 1),
+ '1940860': ('G3 – Frühlings-Suchsel-Set', None, 1), '1926532': ('G2 – Oster-Suchsel-Set', None, 1),
+ '1976711': ('A – Muttertag Blumen', None, 1), '1972081': ('A – Muttertag Buddy Book', None, 1),
+ '1971059': ('A – Muttertag Steckbrief', None, 1), '1961901': ('G2 – Ausmalbilder Muttertag', None, 1),
+ '1965000': ('A – Muttertag Muttertags-Würfel', 'neuere Fassung', 0), '1979920': ('A – Muttertag Vase Freebie', None, 0),
+ '1974790': ('G7 – Interview mit meiner Familie', None, 0), '1991509': ('G3 – Vatertagskarten', None, 1),
+ # Sachunterricht
+ '1962112': (I + 'Die Biene - Körperbau/Neu 2026', None, 1), '1993749': (I + 'Die Hummel/Neu 2026', None, 1),
+ '1958417': (I + 'Die Ameise/Neu 2026', None, 1), '2005469': (I + 'Der Schmetterling - Körperbau/Neu 2026', None, 1),
+ '2015791': (I + 'Der Marienkäfer/Neu 2026', None, 1), '2001921': (I + 'Die Libelle/Neu 2026', None, 1),
+ '2060396': (I + 'Hornisse/Neu 2026', None, 1), '2052239': (I + 'Hummel Biene Wespe/Neu 2026', None, 1),
+ '1977956': (I + 'Legekreis Insekten/Neu 2026', None, 1), '1971257': (I + 'Steckbriefe & Wissenskarten/Neu 2026', None, 1),
+ '1961335': (I + 'Mandala/Neu 2026', None, 1), '1958321': (I + 'Suchsel/Neu 2026', None, 1),
+ '1983541': (I + 'Memory/Neu 2026', None, 0),
+ '1984325': (WT + 'Legekreis', None, 1), '1947167': (WT + 'Mandala', None, 1), '1950876': (WT + 'Steckbriefe', None, 1),
+ '1965098': (WT + 'Zuordnungsspiel & Ausmalen', None, 1), '1955163': (WT + 'Lese-Zuordnungsspiel', 'Lese-Zuordnung', 1),
+ '1947137': (WT + 'Suchsel', None, 1), '1950889': ('Grundschule/Ozean', None, 1),
+ '1938314': ('Bauernhof/Suchsel', None, 1), '1942516': ('Gartenvögel/Suchsel', None, 1),
+ # Rätselpakete
+ '2429506': (R + 'Jahreskreis/Suchsel – Jahreskreis', 'KOMPLETT', 1), '2433791': (R + 'Jahreskreis/Labyrinthe', None, 1),
+ '2433742': (R + 'Jahreskreis/Lückentexte', None, 1), '2433725': (R + 'Jahreskreis/Silbenrätsel', None, 1),
+ '2433807': (R + 'Jahreskreis/Kreuzworträtsel', None, 1), '2438004': (R + 'Jahreskreis/Rätselmix', None, 1),
+ '2433242': (R + 'Jahreskreis/Wortschlange', None, 1), '2433863': (R + 'Jahreskreis/Geheimschrift', None, 1),
+ '2433896': (R + 'Jahreskreis/Bingo', None, 1), '2433912': (R + 'Jahreskreis/Bild-Sudoku', None, 1),
+ '2433875': (R + 'Jahreskreis/Buchstabensalat', None, 1),
+ '2438516': (R + 'Tiere & Natur/Kreuzworträtsel', None, 1), '2438515': (R + 'Tiere & Natur/Suchsel – Tiere', None, 1),
+ '2438519': (R + 'Tiere & Natur/Silbenrätsel', None, 1), '2438523': (R + 'Tiere & Natur/Lückentexte', None, 1),
+ '2438521': (R + 'Tiere & Natur/Buchstabensalat', None, 1), '2441758': (R + 'Tiere & Natur/Gratis-Paket – Suchsel Tiere bei uns', None, 1),
+ '2441767': (R + 'Tiere & Natur/Gratis-Paket – Suchsel Tiere der Welt', None, 1),
+ '2437996': (R + 'Jugendliche/Fitness', None, 1), '2437999': (R + 'Jugendliche/Gaming', None, 1), '2437994': (R + 'Jugendliche/Fußball', None, 1),
+ # Sport
+ '2437985': ('S70 – Sport-Quartett', None, 1), '2437988': ('S71 – Mission Sporthalle', None, 1), '2437992': ('S72 – Sport-Casino', None, 1),
+ '2437527': ('S16 – Badminton Grundlagen', None, 1), '2437532': ('S16b – Badminton Technik', None, 1), '2437522': ('S01 – Fitnesskarten', None, 1),
+ # Fächer
+ '2442712': ('MA1 – Einmaleins', None, 1), '2442098': ('Weggehen – ankommen', None, 1), '2442108': ('Essen, Kultur & Genuss', None, 1),
+ # Verbraucherbildung
+ '1897069': (V + 'Erste eigene Wohnung/Klasse 9-10/Modul 1', 'Wohnung_M1', 1), '1920962': (V + 'Erste eigene Wohnung/Klasse 9-10/Modul 2', 'Wohnung_M2_', 1),
+ '1935750': (V + 'Erste eigene Wohnung/Klasse 9-10/Modul 3', 'Wohnung_M3_', 1), '2064480': (V + 'Erste eigene Wohnung/Klasse 9-10/Modul 4', 'Wohnung_M4_', 1),
+ '2440938': (V + 'Erste eigene Wohnung/Klasse 9-10/Modul 5', 'Wohnung_M5_', 1),
+ '2425910': (V + 'Versicherungen/Klasse 9-10/Modul 1', None, 1), '2437885': (V + 'Versicherungen/Klasse 9-10/Modul 3', None, 1),
+ '2437886': (V + 'Versicherungen/Klasse 9-10/Modul 4', None, 1), '2437888': (V + 'Versicherungen/Klasse 9-10/Modul 5', None, 1),
+ '2437909': (V + 'Versicherungen/Klasse 9-10/Abschluss', None, 1),
+ '2441649': (V + 'Volljährigkeit/Klasse 9-10/Modul 1', None, 1), '2441658': (V + 'Volljährigkeit/Klasse 9-10/Modul 2', None, 1),
+ '2441661': (V + 'Volljährigkeit/Klasse 9-10/Modul 3', None, 1),
+ '2419366': (V + 'Werbung/Klasse 9-10/Modul 1', None, 1), '2432399': (V + 'Mobilität/Klasse 9-10/Mobil werden', None, 1),
+ '2437881': (V + 'Ausbildung & erster Job/Klasse 9-10/Ausbildung', None, 1), '2213674': ('M1 - Wie schläfst du eigentlich', None, 1),
+ # Schuljahr & Anlässe
+ '2026438': (S + '01 Schuljahresanfang & Kennenlernen/1 Grundschule/Das bin ich', None, 0),
+ '2032831': (S + '01 Schuljahresanfang & Kennenlernen/1 Grundschule/Einfach ausdrucken', None, 0),
+ '2037029': (S + '09 Klassenregeln & Rituale/1 Grundschule/Geburtstag/Einfach ausdrucken (Torte)', None, 0),
+ '2018260': (None, None, 0),
+ '2011270': (S + '02 Ferienbeginn/1 Grundschule/Ferienpass', None, 1),
+ '2001542': (S + '05 Schuljahresende & Abschied/1 Grundschule/Buddy Book', None, 1),
+ '2040602': (S + '05 Schuljahresende & Abschied/1 Grundschule/Freebies/Ausmalbilder', None, 1),
+ '1954502': (S + '03 Ferienende/1 Grundschule/Meine Osterferien', 'Meine Osterferien.pdf', 0),
+}
