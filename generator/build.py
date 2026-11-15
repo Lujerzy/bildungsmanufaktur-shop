@@ -330,11 +330,11 @@ body = '''<div class="wrap" style="padding-top:28px"><nav class="crumbs"><a href
 <div style="display:flex;justify-content:space-between"><span data-cart-n>0 Materialien</span><span data-cart-sum>0,00 €</span></div>
 <div style="display:flex;justify-content:space-between;font-family:Fredoka,sans-serif;font-weight:600;font-size:22px"><span>Gesamt</span><span data-cart-sum>0,00 €</span></div>
 <p class="small muted" style="margin:0">Endpreis. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</p>
-<label for="mail">E-Mail für Download und Rechnung</label><input id="mail" type="email" placeholder="deine@e-mail.de">
-<label class="consent"><input type="checkbox"><span>Ich stimme ausdrücklich zu, dass der Download vor Ablauf der Widerrufsfrist beginnt. Mir ist bekannt, dass ich dadurch mein Widerrufsrecht verliere.</span></label>
+<label for="mail">E-Mail für Download und Rechnung</label><input id="mail" type="email" autocomplete="email" placeholder="deine@e-mail.de" data-mail>
+<label class="consent"><input type="checkbox" data-consent><span>Ich stimme ausdrücklich zu, dass der Download vor Ablauf der Widerrufsfrist beginnt. Mir ist bekannt, dass ich dadurch mein Widerrufsrecht verliere.</span></label>
 <p class="small" style="margin:0">Es gelten die <a href="/agb.html">AGB</a> und die <a href="/datenschutz.html">Datenschutzerklärung</a>.</p>
-<button type="button" class="btn off" disabled>Zahlungspflichtig bestellen</button>
-<p class="small muted" style="margin:0;text-align:center">Die Bezahlung (Karte, Apple Pay, Google Pay, PayPal) wird gerade eingerichtet.</p>
+<button type="button" class="btn" data-checkout>Zahlungspflichtig bestellen</button>
+<p class="small muted" style="margin:0;text-align:center" data-checkout-msg>Sichere Bezahlung über Stripe: Karte, Apple Pay, Google Pay, PayPal.</p>
 </aside></div>
 '''
 page('warenkorb.html', 'Warenkorb', 'Dein Warenkorb bei der Bildungsmanufaktur.', body, '',
@@ -399,6 +399,18 @@ body = '''<div class="wrap legal"><nav class="crumbs"><a href="/">Start</a> › 
 <p class="small muted" style="margin:0">Die Widerrufsfunktion wird zusammen mit dem Bezahlvorgang freigeschaltet. Bis dahin: Widerruf per E-Mail an kontakt@bildungsmanufaktur.shop.</p>
 </form></div>'''
 page('widerruf.html', 'Vertrag widerrufen', 'Vertrag widerrufen – Bildungsmanufaktur', body)
+
+body = '''<div class="wrap legal" style="text-align:center"><img src="/assets/img/daumen.webp" alt="" width="150">
+<h1 style="margin:14px 0">Danke für deine Bestellung!</h1>
+<p class="lead" data-danke>Deine Zahlung ist eingegangen. Den Download-Link und die Rechnung bekommst du per E-Mail.</p>
+<p class="small muted">Keine Mail da? Schau bitte im Spam-Ordner nach oder schreib an <a href="mailto:kontakt@bildungsmanufaktur.shop">kontakt@bildungsmanufaktur.shop</a>.</p>
+<p style="margin-top:20px"><a class="btn" href="/materialien.html">Weiter stöbern</a></p></div>
+<script>try{localStorage.removeItem('bm-warenkorb')}catch(e){}</script>'''
+page('danke.html', 'Danke für deine Bestellung', 'Bestellung abgeschlossen', body)
+fk = {m['id']: {'titel': m['titel'], 'preis': m['preis'], 'schul': m['schul'], 'eduki': m['eduki']} for m in P if not m['gratis']}
+_fd = os.path.join(os.path.dirname(OUT), 'netlify', 'functions')
+os.makedirs(_fd, exist_ok=True)
+open(os.path.join(_fd, 'katalog.json'), 'w').write(json.dumps(fk, ensure_ascii=False))
 
 page('404.html', 'Seite nicht gefunden', 'Seite nicht gefunden',
      '<div class="wrap legal" style="text-align:center"><img src="/assets/img/zeigt.webp" alt="" width="140"><h1>Hoppla – diese Seite gibt es nicht.</h1><p style="margin-top:16px"><a class="btn" href="/">Zur Startseite</a></p></div>')

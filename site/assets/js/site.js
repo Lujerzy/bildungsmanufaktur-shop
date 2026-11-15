@@ -118,5 +118,26 @@
     zeichnen();
   }
 
+  // Kasse
+  var kasse = document.querySelector('[data-checkout]');
+  if (kasse) {
+    kasse.addEventListener('click', function () {
+      var msg = document.querySelector('[data-checkout-msg]');
+      var mail = document.querySelector('[data-mail]').value.trim();
+      var ok = document.querySelector('[data-consent]').checked;
+      var items = lesen();
+      function fehler(t) { msg.textContent = t; msg.style.color = '#C0392B'; }
+      if (!items.length) return fehler('Dein Warenkorb ist leer.');
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(mail)) return fehler('Bitte gib deine E-Mail-Adresse ein.');
+      if (!ok) return fehler('Bitte bestätige den Hinweis zum Widerrufsrecht.');
+      kasse.disabled = true; kasse.textContent = 'Einen Moment …';
+      fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: items, email: mail, zustimmung: ok }) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) { if (d.url) { window.location.href = d.url; } else { throw new Error(d.fehler || 'Fehler'); } })
+        .catch(function (e) { kasse.disabled = false; kasse.textContent = 'Zahlungspflichtig bestellen'; fehler(e.message || 'Die Bezahlung konnte nicht gestartet werden.'); });
+    });
+  }
+
   zaehler();
 })();
