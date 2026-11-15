@@ -2,7 +2,7 @@
 // Secret: STRIPE_SECRET_KEY. Links: /d/<checkout_session_id>  und  /f/<session>/<datei-key>
 const MANIFEST = __MANIFEST__; // { dateien: {eduki: [key,...]}, pakete: {eduki: [eduki,...]}, titel: {eduki: titel}, slug: {slug: eduki}, gratis: [eduki] }
 const TAGE = 30;
-const SHOP = 'https://bildungsmanufaktur.netlify.app';
+const SHOP = 'https://bildungsmanufaktur.shop';
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const seite = (titel, inhalt, status = 200) => new Response(`<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${esc(titel)} | Bildungsmanufaktur</title>
