@@ -4,6 +4,8 @@ import html, json, os
 
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'site')
 PREIS_FEHLT = 'Preis folgt'
+import hashlib
+VER = hashlib.md5(b''.join(open(os.path.join(OUT, 'assets', p), 'rb').read() for p in ('css/site.css', 'js/site.js'))).hexdigest()[:8]
 E = html.escape
 
 from katalog import laden, euro, SCHUL_FAKTOR
@@ -85,7 +87,7 @@ def head(title, desc, active=''):
 <link rel="icon" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/titan-one.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/site.css?v={VER}">
 </head>
 <body>
 <div class="preview">Vorschau: Der Shop öffnet in Kürze – Bestellungen sind noch nicht möglich.</div>
@@ -115,7 +117,7 @@ FOOT = '''</main>
 </div>
 <div class="wrap bottom"><span>© 2026 Bildungsmanufaktur · Lukas Jaskolka</span><span>Alle Preise sind Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</span></div>
 </footer>
-<script src="/assets/js/site.js" defer></script>
+<script src="/assets/js/site.js?v=' + VER + '" defer></script>
 </body>
 </html>
 '''
@@ -412,7 +414,7 @@ open(os.path.join(os.path.dirname(OUT), 'netlify.toml'), 'w').write('''[build]
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 [[headers]]
-  for = "/assets/*"
+  for = "/assets/img/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
 ''')
