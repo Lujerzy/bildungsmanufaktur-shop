@@ -32,14 +32,20 @@
 <main>
 <div class="wrap legal"><nav class="crumbs"><a href="/">Start</a> › <span>Vertrag widerrufen</span></nav>
 <h1 style="margin:14px 0">Vertrag widerrufen</h1>
-<p>Hier kannst du einen Kauf widerrufen. Bei digitalen Inhalten erlischt das Widerrufsrecht, sobald der Download mit deiner Zustimmung begonnen hat – Details stehen in der <a href="/widerrufsbelehrung.html">Widerrufsbelehrung</a>.</p>
-<form class="box form" onsubmit="return false">
-<label for="wn">Name</label><input id="wn" type="text" autocomplete="name">
-<label for="wm">E-Mail-Adresse der Bestellung</label><input id="wm" type="email" autocomplete="email">
-<label for="wb">Bestellnummer oder Material</label><input id="wb" type="text">
-<button type="button" class="btn off" disabled style="align-self:flex-start">Widerruf bestätigen</button>
-<p class="small muted" style="margin:0">Die Widerrufsfunktion wird zusammen mit dem Bezahlvorgang freigeschaltet. Bis dahin: Widerruf per E-Mail an kontakt@bildungsmanufaktur.shop.</p>
-</form></div></main>
+<p>Hier kannst du einen Kauf widerrufen. Bitte beachte: Bei digitalen Inhalten erlischt das Widerrufsrecht, sobald der Download mit deiner ausdrücklichen Zustimmung begonnen hat – Details stehen in der <a href="/widerrufsbelehrung.html">Widerrufsbelehrung</a>.</p>
+<form class="box form" data-widerruf>
+<label for="wn">Dein Name</label><input id="wn" name="name" type="text" autocomplete="name" required>
+<label for="wb">Welcher Vertrag? (Bestelldatum, Material oder Bestellnummer)</label><input id="wb" name="vertrag" type="text" required>
+<label for="wm">E-Mail-Adresse für die Eingangsbestätigung</label><input id="wm" name="email" type="email" autocomplete="email" required>
+<button type="submit" class="btn" style="align-self:flex-start">Widerruf bestätigen</button>
+<p class="small muted" style="margin:0" data-widerruf-msg>Du bekommst sofort eine Eingangsbestätigung per E-Mail mit Datum und Uhrzeit.</p>
+</form></div>
+<script>(function(){var f=document.querySelector('[data-widerruf]');var m=document.querySelector('[data-widerruf-msg]');
+f.addEventListener('submit',function(e){e.preventDefault();var b=f.querySelector('button');b.disabled=true;b.textContent='Wird gesendet …';
+fetch('/api/widerruf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:f.name.value,vertrag:f.vertrag.value,email:f.email.value})})
+.then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.fehler||'Fehler');return d;});})
+.then(function(d){f.innerHTML='<h3 style="margin:0">Dein Widerruf ist eingegangen.</h3><p>Eingang: '+d.zeit+'. Die Bestätigung ist per E-Mail unterwegs.</p>';})
+.catch(function(err){b.disabled=false;b.textContent='Widerruf bestätigen';m.style.color='#C0392B';m.textContent=err.message+' Alternativ per E-Mail an kontakt@bildungsmanufaktur.shop.';});});})();</script></main>
 <footer class="site-foot">
 <div class="wrap cols">
 <div class="brand"><span><img src="/assets/img/logo_quer.webp" alt="Bildungsmanufaktur" width="900" height="339"></span><p style="margin:0">Unterrichtsmaterial mit Köpfchen – für Klasse 1 bis 13.</p></div>

@@ -363,9 +363,13 @@ legal('impressum.html', 'Impressum', '''<h3>Angaben gemäß § 5 DDG</h3><p>Luka
 <h3>Verbraucherstreitbeilegung</h3><p>Ich bin nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>''')
 
 legal('datenschutz.html', 'Datenschutzerklärung', '''<h3>1. Verantwortlicher</h3><p>Lukas Jaskolka, Bildungsmanufaktur, Paul-Klee-Straße 72, 24539 Neumünster, kontakt@bildungsmanufaktur.shop</p>
-<h3>2. Hosting</h3><p>Diese Website wird bei Netlify, Inc. (USA) gehostet. Beim Aufruf werden technisch notwendige Daten (z. B. IP-Adresse, Zeitpunkt, aufgerufene Seite) in Server-Logfiles verarbeitet, um die Seite sicher bereitzustellen (Art. 6 Abs. 1 lit. f DSGVO). [Grundlage der Übermittlung in die USA ergänzen.]</p>
+<h3>2. Hosting</h3><p>Diese Website wird bei Netlify, Inc. (USA) gehostet. Beim Aufruf werden technisch notwendige Daten (z. B. IP-Adresse, Zeitpunkt, aufgerufene Seite) in Server-Logfiles verarbeitet, um die Seite sicher bereitzustellen (Art. 6 Abs. 1 lit. f DSGVO). Netlify ist unter dem EU-US Data Privacy Framework zertifiziert; ergänzend gelten die EU-Standardvertragsklauseln.</p>
 <h3>3. Warenkorb</h3><p>Der Warenkorb wird nur lokal in deinem Browser gespeichert (Local Storage) und nicht an mich übertragen.</p>
-<h3>4. Bestellung, Zahlung und Download</h3><p>Für Bestellungen verarbeite ich Name, E-Mail-Adresse, Bestelldaten und – bei Schulen – die Rechnungsadresse (Art. 6 Abs. 1 lit. b DSGVO). Die Zahlung läuft über Stripe; dorthin werden die für die Zahlung nötigen Daten übermittelt. [Details ergänzen, sobald der Bezahlvorgang aktiv ist.]</p>
+<h3>4. Bestellung, Zahlung und Download</h3><p>Für Bestellungen verarbeite ich Name, E-Mail-Adresse, Bestelldaten und – bei Schulen – die Rechnungsadresse (Art. 6 Abs. 1 lit. b DSGVO); Rechnungsdaten bewahre ich nach den steuerrechtlichen Pflichten auf (Art. 6 Abs. 1 lit. c DSGVO).</p>
+<p><b>Zahlung:</b> Die Bezahlung wickelt Stripe Payments Europe Ltd. (Irland) ab. Dafür werden deine Zahlungs- und Bestelldaten an Stripe übermittelt; Kartendaten gibst du direkt bei Stripe ein, sie erreichen mich nicht. Stripe kann Daten auch in die USA übertragen (EU-US Data Privacy Framework, Standardvertragsklauseln). Wählst du PayPal, wird PayPal (Europe) S.à r.l. et Cie, S.C.A. (Luxemburg) eingebunden.</p>
+<p><b>Download:</b> Die Dateien liegen in einem Speicher von Cloudflare, Inc. (USA). Beim Herunterladen werden technisch nötige Daten (IP-Adresse, Zeitpunkt, Download-Link) verarbeitet; der Link prüft bei Stripe, ob die Bestellung bezahlt ist (Art. 6 Abs. 1 lit. b DSGVO). Cloudflare ist unter dem EU-US Data Privacy Framework zertifiziert.</p>
+<p><b>E-Mails zur Bestellung:</b> Den Download-Link und Eingangsbestätigungen (z. B. beim Widerruf) verschicke ich über Brevo (Sendinblue GmbH, Berlin) an die von dir angegebene E-Mail-Adresse (Art. 6 Abs. 1 lit. b und c DSGVO).</p>
+<h3>4a. Widerruf über die Website</h3><p>Nutzt du die Funktion „Vertrag widerrufen“, verarbeite ich Name, Angaben zum Vertrag und E-Mail-Adresse, um den Widerruf zu bearbeiten und dir den Eingang zu bestätigen (Art. 6 Abs. 1 lit. c DSGVO i. V. m. § 356a BGB).</p>
 <h3>5. Newsletter</h3><p>Für den Newsletter brauche ich deine E-Mail-Adresse und deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die per Bestätigungs-E-Mail eingeholt wird (Double-Opt-in). Versanddienst: Brevo. Abmelden geht jederzeit.</p>
 <h3>6. Schriften und Cookies</h3><p>Alle Schriften werden lokal von diesem Server geladen. Es werden keine Tracking- oder Werbe-Cookies eingesetzt.</p>
 <h3>7. Speicherdauer</h3><p>Bestell- und Rechnungsdaten werden nach den gesetzlichen Aufbewahrungsfristen gelöscht, Newsletter-Daten nach deiner Abmeldung.</p>
@@ -374,30 +378,52 @@ legal('datenschutz.html', 'Datenschutzerklärung', '''<h3>1. Verantwortlicher</h
 legal('agb.html', 'AGB & Nutzungsrechte', '''<h3>§ 1 Geltungsbereich</h3><p>Diese Bedingungen gelten für alle Bestellungen digitaler Unterrichtsmaterialien über diese Website zwischen Lukas Jaskolka, Bildungsmanufaktur, und Verbraucher:innen, Lehrkräften und Schulen.</p>
 <h3>§ 2 Vertragsschluss</h3><p>Die Darstellung der Materialien ist noch kein bindendes Angebot. Mit dem Klick auf „Zahlungspflichtig bestellen“ gibst du ein verbindliches Angebot ab. Der Vertrag kommt zustande, wenn ich die Bestellung per E-Mail bestätige oder den Download bereitstelle.</p>
 <h3>§ 3 Preise und Zahlung</h3><p>Alle Preise sind Endpreise. Als Kleinunternehmer nach § 19 UStG weise ich keine Umsatzsteuer aus. Bezahlt wird über die im Bestellprozess angebotenen Zahlungsarten; Schulen können auf Rechnung kaufen.</p>
-<h3>§ 4 Bereitstellung</h3><p>Nach Zahlungseingang erhältst du einen Download-Link auf der Bestätigungsseite und per E-Mail. Der Link ist [30 Tage] gültig.</p>
+<h3>§ 4 Bereitstellung</h3><p>Nach Zahlungseingang erhältst du einen Download-Link auf der Bestätigungsseite und per E-Mail. Der Link ist 30 Tage gültig.</p>
 <h3 id="lizenzen">§ 5 Nutzungsrechte</h3><ul><li><b>Einzellizenz:</b> Eine Lehrkraft darf das Material für den eigenen Unterricht nutzen und für die eigenen Lerngruppen kopieren – auch digital in geschlossenen Lernplattformen der eigenen Klassen.</li><li><b>Schullizenz:</b> Alle Lehrkräfte einer Schule (ein Standort) dürfen das Material im selben Umfang nutzen.</li><li><b>Nicht erlaubt:</b> Weitergabe außerhalb der Lizenz, öffentliches Hochladen (z. B. auf Websites, Tauschbörsen oder Plattformen), Weiterverkauf und die Veröffentlichung veränderter Fassungen.</li></ul><p>Alle Inhalte sind urheberrechtlich geschützt.</p>
 <h3>§ 6 Widerrufsrecht</h3><p>Verbraucher:innen haben ein Widerrufsrecht nach Maßgabe der <a href="/widerrufsbelehrung.html">Widerrufsbelehrung</a>. Den Widerruf kannst du auch über die Seite <a href="/widerruf.html">„Vertrag widerrufen“</a> erklären.</p>
 <h3>§ 7 Gewährleistung und Haftung</h3><p>Es gelten die gesetzlichen Gewährleistungsrechte. Ich hafte unbeschränkt bei Vorsatz und grober Fahrlässigkeit sowie bei Verletzung von Leben, Körper und Gesundheit; im Übrigen nur bei Verletzung wesentlicher Vertragspflichten und begrenzt auf den vorhersehbaren Schaden.</p>
 <h3>§ 8 Schlussbestimmungen</h3><p>Es gilt deutsches Recht. Gegenüber Verbraucher:innen gilt diese Rechtswahl nur, soweit dadurch nicht zwingende Schutzvorschriften ihres Aufenthaltsstaates entzogen werden.</p>''')
 
-legal('widerrufsbelehrung.html', 'Widerrufsbelehrung', '''<p class="note" style="background:var(--koralle)">Hier wird vor dem Shop-Start die aktuelle gesetzliche Muster-Widerrufsbelehrung eingesetzt.</p>
-<h3>Widerrufsrecht</h3><p>Du hast das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Frist beginnt mit dem Tag des Vertragsschlusses. Du kannst den Widerruf über die <a href="/widerruf.html">Widerrufsfunktion auf dieser Website</a> oder mit einer eindeutigen Erklärung per E-Mail an kontakt@bildungsmanufaktur.shop erklären.</p>
-<h3>Folgen des Widerrufs</h3><p>Wenn du den Vertrag widerrufst, erstatte ich dir alle Zahlungen unverzüglich, spätestens binnen vierzehn Tagen ab Eingang des Widerrufs, über dasselbe Zahlungsmittel.</p>
-<h3>Erlöschen des Widerrufsrechts</h3><p>Bei digitalen Inhalten erlischt das Widerrufsrecht, wenn ich mit der Bereitstellung begonnen habe, nachdem du ausdrücklich zugestimmt hast, dass der Download vor Ablauf der Widerrufsfrist beginnt, und du bestätigt hast, dass du dadurch dein Widerrufsrecht verlierst.</p>''')
+legal('widerrufsbelehrung.html', 'Widerrufsbelehrung', '''<h3>Widerrufsrecht</h3>
+<p>Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen.</p>
+<p>Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.</p>
+<p>Um Ihr Widerrufsrecht auszuüben, müssen Sie mir (Lukas Jaskolka, Bildungsmanufaktur, Paul-Klee-Straße 72, 24539 Neumünster, E-Mail: kontakt@bildungsmanufaktur.shop) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.</p>
+<p>Sie können Ihr Widerrufsrecht auch online unter <a href="/widerruf.html">bildungsmanufaktur.shop/widerruf.html</a> über die Schaltfläche „Vertrag widerrufen“ ausüben. Wenn Sie diese Widerrufsfunktion nutzen, übermittle ich Ihnen unverzüglich (z. B. per E-Mail) eine Eingangsbestätigung mit Informationen zum Inhalt Ihrer Widerrufserklärung sowie dem Datum und der Uhrzeit ihres Eingangs.</p>
+<p>Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.</p>
+<h3>Folgen des Widerrufs</h3>
+<p>Wenn Sie diesen Vertrag widerrufen, habe ich Ihnen alle Zahlungen, die ich von Ihnen erhalten habe, unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die Mitteilung über Ihren Widerruf dieses Vertrags bei mir eingegangen ist. Für diese Rückzahlung verwende ich dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden Ihnen wegen dieser Rückzahlung Entgelte berechnet.</p>
+<h3>Vorzeitiges Erlöschen des Widerrufsrechts</h3>
+<p>Bei einem Vertrag über die Bereitstellung digitaler Inhalte, die nicht auf einem körperlichen Datenträger geliefert werden (Download), erlischt das Widerrufsrecht, wenn ich mit der Vertragserfüllung begonnen habe, nachdem Sie ausdrücklich zugestimmt haben, dass ich mit der Ausführung des Vertrags vor Ablauf der Widerrufsfrist beginne, Sie Ihre Kenntnis davon bestätigt haben, dass Sie durch Ihre Zustimmung mit Beginn der Ausführung des Vertrags Ihr Widerrufsrecht verlieren, und ich Ihnen eine Bestätigung des Vertrags auf einem dauerhaften Datenträger zur Verfügung gestellt habe.</p>
+<h3>Muster-Widerrufsformular</h3>
+<p>(Wenn Sie den Vertrag widerrufen wollen, dann füllen Sie bitte dieses Formular aus und senden Sie es zurück.)</p>
+<p>– An Lukas Jaskolka, Bildungsmanufaktur, Paul-Klee-Straße 72, 24539 Neumünster, E-Mail: kontakt@bildungsmanufaktur.shop:<br>
+– Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Waren (*)/die Erbringung der folgenden Dienstleistung (*)/die Bereitstellung der folgenden digitalen Inhalte (*)<br>
+– Bestellt am (*)/erhalten am (*)<br>
+– Name des/der Verbraucher(s)<br>
+– Anschrift des/der Verbraucher(s)<br>
+– Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier)<br>
+– Datum</p>
+<p>(*) Unzutreffendes streichen.</p>''')
 
 legal('kontakt.html', 'Kontakt & Schulbestellung', '''<p>Fragen zu einem Material, einer Lizenz oder einer Rechnung? Schreib mir an <a href="mailto:kontakt@bildungsmanufaktur.shop">kontakt@bildungsmanufaktur.shop</a>.</p>
 <h3>Kauf auf Rechnung für Schulen</h3><p>Bitte schick mir den Namen der Schule, die Rechnungsadresse, die gewünschten Materialien und ob du eine Einzel- oder Schullizenz brauchst. Du bekommst eine Rechnung zum Überweisen; nach Zahlungseingang folgt der Download-Link.</p>''')
 
 body = '''<div class="wrap legal"><nav class="crumbs"><a href="/">Start</a> › <span>Vertrag widerrufen</span></nav>
 <h1 style="margin:14px 0">Vertrag widerrufen</h1>
-<p>Hier kannst du einen Kauf widerrufen. Bei digitalen Inhalten erlischt das Widerrufsrecht, sobald der Download mit deiner Zustimmung begonnen hat – Details stehen in der <a href="/widerrufsbelehrung.html">Widerrufsbelehrung</a>.</p>
-<form class="box form" onsubmit="return false">
-<label for="wn">Name</label><input id="wn" type="text" autocomplete="name">
-<label for="wm">E-Mail-Adresse der Bestellung</label><input id="wm" type="email" autocomplete="email">
-<label for="wb">Bestellnummer oder Material</label><input id="wb" type="text">
-<button type="button" class="btn off" disabled style="align-self:flex-start">Widerruf bestätigen</button>
-<p class="small muted" style="margin:0">Die Widerrufsfunktion wird zusammen mit dem Bezahlvorgang freigeschaltet. Bis dahin: Widerruf per E-Mail an kontakt@bildungsmanufaktur.shop.</p>
-</form></div>'''
+<p>Hier kannst du einen Kauf widerrufen. Bitte beachte: Bei digitalen Inhalten erlischt das Widerrufsrecht, sobald der Download mit deiner ausdrücklichen Zustimmung begonnen hat – Details stehen in der <a href="/widerrufsbelehrung.html">Widerrufsbelehrung</a>.</p>
+<form class="box form" data-widerruf>
+<label for="wn">Dein Name</label><input id="wn" name="name" type="text" autocomplete="name" required>
+<label for="wb">Welcher Vertrag? (Bestelldatum, Material oder Bestellnummer)</label><input id="wb" name="vertrag" type="text" required>
+<label for="wm">E-Mail-Adresse für die Eingangsbestätigung</label><input id="wm" name="email" type="email" autocomplete="email" required>
+<button type="submit" class="btn" style="align-self:flex-start">Widerruf bestätigen</button>
+<p class="small muted" style="margin:0" data-widerruf-msg>Du bekommst sofort eine Eingangsbestätigung per E-Mail mit Datum und Uhrzeit.</p>
+</form></div>
+<script>(function(){var f=document.querySelector('[data-widerruf]');var m=document.querySelector('[data-widerruf-msg]');
+f.addEventListener('submit',function(e){e.preventDefault();var b=f.querySelector('button');b.disabled=true;b.textContent='Wird gesendet …';
+fetch('/api/widerruf',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:f.name.value,vertrag:f.vertrag.value,email:f.email.value})})
+.then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.fehler||'Fehler');return d;});})
+.then(function(d){f.innerHTML='<h3 style="margin:0">Dein Widerruf ist eingegangen.</h3><p>Eingang: '+d.zeit+'. Die Bestätigung ist per E-Mail unterwegs.</p>';})
+.catch(function(err){b.disabled=false;b.textContent='Widerruf bestätigen';m.style.color='#C0392B';m.textContent=err.message+' Alternativ per E-Mail an kontakt@bildungsmanufaktur.shop.';});});})();</script>'''
 page('widerruf.html', 'Vertrag widerrufen', 'Vertrag widerrufen – Bildungsmanufaktur', body)
 
 body = '''<div class="wrap legal" style="text-align:center"><img src="/assets/img/daumen.webp" alt="" width="150">
