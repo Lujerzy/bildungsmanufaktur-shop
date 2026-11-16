@@ -59,17 +59,38 @@
     function suche(v) {
       q = v.trim(); if (ls && ls.value !== v) ls.value = v; if (si && si.value !== v) si.value = v;
       var u = new URL(location.href); if (q) u.searchParams.set('q', q); else u.searchParams.delete('q'); history.replaceState(null, '', u);
-      anwenden();
+      seite = 1; anwenden();
     }
     [ls, si].forEach(function (el) { if (el) el.addEventListener('input', function () { suche(el.value); }); });
     if (si && si.form) si.form.addEventListener('submit', function (e) { e.preventDefault(); suche(si.value); if (ls) ls.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    var PRO = 24, seite = Math.max(1, parseInt(params.get('seite'), 10) || 1);
+    var grid = document.querySelector('[data-grid]'), pager = document.createElement('nav');
+    pager.className = 'pager'; pager.setAttribute('aria-label', 'Seiten'); grid.parentNode.insertBefore(pager, grid.nextSibling);
+    function blaettern(seiten) {
+      var u = new URL(location.href); if (seite > 1) u.searchParams.set('seite', seite); else u.searchParams.delete('seite'); history.replaceState(null, '', u);
+      if (seiten < 2) { pager.innerHTML = ''; return; }
+      var nr = [], h = '';
+      for (var i = 1; i <= seiten; i++) if (i === 1 || i === seiten || Math.abs(i - seite) <= 1) nr.push(i);
+      h += '<button type="button" data-s="' + (seite - 1) + '"' + (seite === 1 ? ' disabled' : '') + '>‹ Zurück</button>';
+      nr.forEach(function (i, k) {
+        if (k && i - nr[k - 1] > 1) h += '<span>…</span>';
+        h += '<button type="button" data-s="' + i + '"' + (i === seite ? ' aria-current="page"' : '') + '>' + i + '</button>';
+      });
+      h += '<button type="button" class="weiter" data-s="' + (seite + 1) + '"' + (seite === seiten ? ' disabled' : '') + '>Weiter ›</button>';
+      pager.innerHTML = h;
+    }
+    pager.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-s]'); if (!b || b.disabled) return;
+      seite = parseInt(b.dataset.s, 10); anwenden();
+      var top = document.querySelector('.results'); if (top) top.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
     function anwenden() {
       side.querySelectorAll('.pill').forEach(function (p) {
         var g = p.dataset.g, v = p.dataset.v, on;
         if (g === 'stufe' || g === 'preis') on = st[g] === v; else on = st[g].indexOf(v) >= 0;
         p.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
-      var n = 0;
+      var n = 0, passt = [];
       document.querySelectorAll('[data-grid] .card').forEach(function (c) {
         var ok = (st.stufe === 'alle' || c.dataset.stufe.split(' ').indexOf(st.stufe) >= 0) &&
           (st.saison.length === 0 || c.dataset.saison === '1') &&
@@ -77,8 +98,11 @@
           (st.preis === 'alle' || c.dataset.preis === st.preis) &&
           (st.art.length === 0 || st.art.indexOf(c.dataset.art) >= 0) &&
           treffer(c);
-        c.hidden = !ok; if (ok) n++;
+        c.hidden = true; if (ok) { n++; passt.push(c); }
       });
+      var seiten = Math.max(1, Math.ceil(n / PRO)); if (seite > seiten) seite = seiten;
+      passt.slice((seite - 1) * PRO, seite * PRO).forEach(function (c) { c.hidden = false; });
+      blaettern(seiten);
       document.querySelector('[data-count]').textContent = n === 1 ? '1 Material' : n + ' Materialien';
       document.querySelector('[data-empty]').hidden = n !== 0;
       var eh = document.querySelector('[data-empty] h2'), ep = document.querySelector('[data-empty] p');
@@ -90,7 +114,7 @@
         var g = p.dataset.g, v = p.dataset.v;
         if (g === 'stufe' || g === 'preis') st[g] = v;
         else { var i = st[g].indexOf(v); if (i >= 0) st[g].splice(i, 1); else st[g].push(v); }
-        anwenden();
+        seite = 1; anwenden();
       }
       if (ev.target.closest('[data-reset]')) { st = { stufe: 'alle', preis: 'alle', fach: [], art: [], saison: [] }; suche(''); }
     });

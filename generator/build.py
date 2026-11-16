@@ -69,7 +69,7 @@ FANZ = {}
 for _m in P: FANZ[_m['fach']] = FANZ.get(_m['fach'], 0) + 1
 
 NAV = [('/', 'Start'), ('/materialien.html', 'Materialien'), ('/materialien.html?art=Sparpaket', 'Sparpakete'),
-       ('/gratis.html', 'Gratis'), ('/#ueber', 'Über mich')]
+       ('/gratis.html', 'Gratis'), ('/meine-materialien.html', 'Meine Materialien'), ('/#ueber', 'Über mich')]
 
 
 def head(title, desc, active=''):
@@ -100,6 +100,7 @@ def head(title, desc, active=''):
 <div class="head-tools">
 <form action="/materialien.html" role="search"><label class="visually-hidden" for="q">Material suchen</label><input id="q" class="search" type="search" name="q" placeholder="Thema, Fach, Klasse …"></form>
 <button type="button" class="search-btn" data-suche aria-label="Suche öffnen" aria-expanded="false"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button>
+<a class="konto-btn" href="/meine-materialien.html" aria-label="Meine Materialien" title="Meine Materialien"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></a>
 <a class="cart-btn" href="/warenkorb.html" aria-label="Warenkorb"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 11h10.8L21 7H6.2"/><circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg><span class="cart-count" data-n="0">0</span></a>
 </div>
 </div>
@@ -487,7 +488,7 @@ f.addEventListener('submit',function(e){e.preventDefault();var b=f.querySelector
 fetch('/api/konto',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:f.email.value})})
 .then(function(r){return r.json();}).then(function(d){if(!d.ok)throw new Error(d.fehler||'Fehler');f.innerHTML='<h3 style="margin:0">Schau in dein Postfach!</h3><p style="margin-bottom:0">Wenn es zu dieser Adresse Käufe gibt, ist der Zugangslink jetzt unterwegs (bitte auch im Spam-Ordner nachsehen).</p>';})
 .catch(function(err){b.disabled=false;b.textContent='Zugangslink schicken';m.style.color='#C0392B';m.textContent='Das hat nicht geklappt. Bitte versuch es gleich noch einmal oder schreib an kontakt@bildungsmanufaktur.shop.';});});})();</script>'''
-page('meine-materialien.html', 'Meine Materialien', 'Alle gekauften Materialien jederzeit erneut herunterladen.', body)
+page('meine-materialien.html', 'Meine Materialien', 'Alle gekauften Materialien jederzeit erneut herunterladen.', body, 'Meine Materialien')
 body = '<div class="wrap legal" style="text-align:center"><img src="/assets/img/daumen.webp" alt="" width="150"><h1 style="margin:14px 0">Newsletter</h1><p class="lead">Neue Freebies, Saisonmaterial und Rabatte zuerst – etwa einmal im Monat, jederzeit abbestellbar.</p><div style="max-width:520px;margin:auto;text-align:left">' + nl_form() + '</div></div>'
 page('newsletter.html', 'Newsletter', 'Newsletter der Bildungsmanufaktur', body)
 

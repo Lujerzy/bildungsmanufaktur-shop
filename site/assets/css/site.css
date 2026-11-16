@@ -304,3 +304,13 @@ h1,h2{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
   .site-head.suche-offen .search{width:100%;font-size:16px}
   .livesuche input{font-size:16px}
 }
+
+/* Seiten blättern */
+.pager{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;margin:34px 0 10px}
+.pager button{font:inherit;font-family:"Fredoka",sans-serif;font-weight:600;font-size:17px;min-width:44px;height:44px;padding:0 14px;border:2px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.pager button[aria-current]{background:var(--ink);color:#fff}
+.pager button.weiter{background:var(--orange);color:#fff}
+.pager button:disabled{opacity:.35;cursor:default;box-shadow:none}
+.pager span{font-weight:700}
+.konto-btn{position:relative;width:48px;height:48px;border-radius:50%;border:2px solid var(--ink);background:var(--tuerkis);box-shadow:3px 3px 0 var(--ink);display:flex;align-items:center;justify-content:center;color:var(--ink)}
+@media (max-width:720px){.pager button{font-size:15px;min-width:40px;height:40px;padding:0 11px}.konto-btn{width:44px;height:44px}}
