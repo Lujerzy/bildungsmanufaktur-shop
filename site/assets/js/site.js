@@ -117,7 +117,8 @@
       var seiten = Math.max(1, Math.ceil(n / PRO)); if (seite > seiten) seite = seiten;
       passt.slice((seite - 1) * PRO, seite * PRO).forEach(function (c) { c.hidden = false; });
       blaettern(seiten);
-      document.querySelector('[data-count]').textContent = n === 1 ? '1 Material' : n + ' Materialien';
+      var ns = Math.max(1, Math.ceil(n / PRO));
+      document.querySelector('[data-count]').textContent = (n === 1 ? '1 Material' : n + ' Materialien') + (ns > 1 ? ' · Seite ' + Math.min(seite, ns) + ' von ' + ns : '');
       document.querySelector('[data-empty]').hidden = n !== 0;
       var eh = document.querySelector('[data-empty] h2'), ep = document.querySelector('[data-empty] p');
       if (eh) { eh.textContent = q ? 'Nichts gefunden für „' + q + '“' : 'Hier wird gerade gebaut'; ep.textContent = q ? 'Probier ein anderes Wort – z. B. das Thema, das Fach oder „Klasse 5“. Oder setze die Filter zurück.' : 'Für diese Auswahl gibt es noch kein Material – das Angebot wächst jede Woche.'; }
