@@ -44,7 +44,7 @@ export default async (req) => {
     body: p,
   });
   const s = await r.json();
-  if (!r.ok) { console.error('Stripe-Fehler', s.error && s.error.message); return json(502, { fehler: 'Die Bezahlung konnte nicht gestartet werden. Bitte versuch es gleich noch einmal.' }); }
+  if (!r.ok) { console.error('Stripe-Fehler', s.error && s.error.message); return json(502, { fehler: 'Die Bezahlung konnte nicht gestartet werden. Bitte versuch es gleich noch einmal.', code: (s.error && (s.error.code || s.error.type)) || String(r.status), hinweis: ((s.error && s.error.message) || '').replace(/(sk|rk)_(live|test)_[A-Za-z0-9*]+/g, (k) => k.slice(0, 8) + '…' + k.slice(-4)).slice(0, 200) }); }
   return json(200, { url: s.url });
 };
 
