@@ -130,6 +130,19 @@ def page(path, title, desc, body, active='', extra=''):
     open(full, 'w').write(head(title, desc, active) + body + extra + FOOT)
 
 
+PAKETE = json.load(open(os.path.join(os.path.dirname(OUT), 'cloudflare', 'pakete.json'), encoding='utf-8'))
+
+
+def vorschau(m, klein=False):
+    """Vorschauseiten mit Wasserzeichen; bei Paketen die Deckblätter der Inhalte."""
+    d = os.path.join(OUT, 'assets', 'vorschau', m['eduki'])
+    if os.path.isdir(d):
+        return [f"/assets/vorschau/{m['eduki']}/{f}" for f in sorted(os.listdir(d)) if f.endswith('.jpg')]
+    if m['eduki'] in PAKETE:
+        return [(BY[k]['thumb'] if klein else BY[k]['src']) for k in PAKETE[m['eduki']] if k in BY][:6]
+    return []
+
+
 def card(m):
     badge = 'Gratis' if m['gratis'] else m['badge']
     tags = m['st'].split() + (['gratis'] if m['gratis'] else []) + (['paket'] if m['art'] == 'Sparpaket' else []) + (['saison'] if m['saison'] else [])
@@ -141,7 +154,7 @@ def card(m):
         price = f'<span class="price">{euro(m["preis"])}</span>'
         act = f'<button type="button" class="btn small" data-add="{m["id"]}">In den Warenkorb</button>'
     return f'''<article class="card" data-tags="{' '.join(tags)}" data-stufe="{m['st']}" data-fach="{E(m['fach'])}" data-art="{m['art']}" data-preis="{'gratis' if m['gratis'] else 'bezahlt'}" data-saison="{'1' if m['saison'] else '0'}">
-<a class="pic" href="{url}" style="background:{m['tint']}"><img src="{m['thumb']}" alt="Deckblatt {E(m['titel'])}" loading="lazy" decoding="async">{b}</a>
+<a class="pic" href="{url}" style="background:{m['tint']}"><span class="ctrack"><img src="{m['thumb']}" alt="Deckblatt {E(m['titel'])}" loading="lazy" decoding="async">{''.join(f'<img src="{v}" alt="" loading="lazy" decoding="async">' for v in vorschau(m, True))}</span>{b}{'<span class="cdots"></span>' if vorschau(m) else ''}</a>
 <div class="body"><div><span class="chip">{m['stufe']}</span> <span class="chip t">{E(m['fach'])}</span></div>
 <h3><a href="{url}">{E(m['titel'])}</a></h3><p>{E(m['info'])}</p>
 <div class="foot">{price}{act}</div></div>
@@ -274,14 +287,13 @@ FAQ = [('Wie bekomme ich das Material?', 'Direkt nach der Bezahlung erscheint de
        ('Was ist der Unterschied zwischen Einzel- und Schullizenz?', 'Mit der Einzellizenz nutzt du das Material für deine eigenen Klassen. Die Schullizenz gilt für alle Lehrkräfte einer Schule – ideal für Fachschaften.'),
        ('Kann meine Schule auf Rechnung kaufen?', 'Ja. Schreib mir kurz mit Schulname und Rechnungsadresse, dann bekommst du eine Rechnung zum Überweisen.')]
 
-PAKETE = json.load(open(os.path.join(os.path.dirname(OUT), 'cloudflare', 'pakete.json'), encoding='utf-8'))
 for m in P:
     x = VS_EXTRA if m['eduki'] == '2425910' else None
     bilder = [(m['src'], 'Deckblatt')]
     vdir = os.path.join(OUT, 'assets', 'vorschau', m['eduki'])
     vor = sorted(f for f in os.listdir(vdir) if f.endswith('.jpg')) if os.path.isdir(vdir) else []
     bilder += [(f"/assets/vorschau/{m['eduki']}/{f}", f'Vorschau Seite {i}') for i, f in enumerate(vor, 1)]
-    if m['eduki'] in PAKETE:
+    if not vor and m['eduki'] in PAKETE:
         bilder += [(BY[k]['src'], 'Enthalten: ' + BY[k]['titel']) for k in PAKETE[m['eduki']] if k in BY]
     thumbs = ''
     if len(bilder) > 1:

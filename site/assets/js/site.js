@@ -78,6 +78,22 @@
     anwenden();
   }
 
+
+  // Material-Karten: durch Deckblatt + Vorschauseiten wischen; am PC beim Drüberfahren automatisch
+  document.querySelectorAll('.card .ctrack').forEach(function (tr) {
+    var n = tr.children.length, dots = tr.parentNode.querySelector('.cdots'), t = null, i = 0;
+    if (n < 2 || !dots) return;
+    for (var k = 0; k < n; k++) dots.appendChild(document.createElement('i'));
+    function mark(x) { i = x; [].forEach.call(dots.children, function (d, j) { d.className = j === x ? 'on' : ''; }); }
+    mark(0);
+    var to; tr.addEventListener('scroll', function () { clearTimeout(to); to = setTimeout(function () { mark(Math.round(tr.scrollLeft / tr.clientWidth)); }, 60); }, { passive: true });
+    var pic = tr.parentNode, ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (window.matchMedia('(hover:hover)').matches && !ruhig) {
+      pic.addEventListener('mouseenter', function () { clearInterval(t); t = setInterval(function () { var x = (i + 1) % n; tr.scrollTo({ left: x * tr.clientWidth, behavior: 'smooth' }); mark(x); }, 1100); });
+      pic.addEventListener('mouseleave', function () { clearInterval(t); tr.scrollTo({ left: 0, behavior: 'smooth' }); mark(0); });
+    }
+  });
+
   // Produkt-Galerie: wischen (Handy), Pfeile + automatisches Weiterblättern (PC)
   var track = document.querySelector('[data-track]');
   if (track) {

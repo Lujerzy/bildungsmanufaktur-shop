@@ -90,6 +90,12 @@ h3{font-family:"Fredoka",sans-serif;font-weight:700;font-size:19px;line-height:1
 .card[hidden]{display:none}
 .card .pic{display:block;padding:18px 18px 0;border-bottom:2.5px solid var(--ink);position:relative}
 .card .pic img{width:100%;aspect-ratio:210/297;object-fit:cover;object-position:top;display:block;border:2px solid var(--ink);border-bottom:none;border-radius:8px 8px 0 0}
+.card .ctrack{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;border-radius:8px 8px 0 0}
+.card .ctrack::-webkit-scrollbar{display:none}
+.card .ctrack img{flex:0 0 100%;scroll-snap-align:start;background:#fff}
+.card .cdots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:5px;pointer-events:none}
+.card .cdots i{width:7px;height:7px;border-radius:50%;background:#fff;border:1.5px solid var(--ink);opacity:.85}
+.card .cdots i.on{background:var(--orange)}
 .card .badge{position:absolute;top:10px;right:10px;font-family:"Fredoka",sans-serif;font-weight:700;font-size:14px;color:#fff;border:2px solid var(--ink);border-radius:999px;padding:4px 12px;transform:rotate(4deg)}
 .card .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
 .card h3 a{color:var(--ink);text-decoration:none}
