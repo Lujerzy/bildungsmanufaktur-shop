@@ -114,7 +114,7 @@ FOOT = '''</main>
 <div class="brand"><span><img src="/assets/img/logo_quer.webp" alt="Bildungsmanufaktur" width="900" height="339"></span><p style="margin:0">Unterrichtsmaterial mit Köpfchen – für Klasse 1 bis 13.</p></div>
 <nav aria-label="Shop"><b>Shop</b><a href="/materialien.html">Alle Materialien</a><a href="/materialien.html?art=Sparpaket">Sparpakete</a><a href="/gratis.html">Gratis</a><a href="/#ueber">Über mich</a></nav>
 <nav aria-label="Rechtliches"><b>Rechtliches</b><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a><a href="/agb.html">AGB &amp; Nutzungsrechte</a><a href="/widerrufsbelehrung.html">Widerrufsbelehrung</a><a class="widerruf-link" href="/widerruf.html">Vertrag widerrufen</a></nav>
-<nav aria-label="Hilfe"><b>Hilfe</b><a href="/agb.html#lizenzen">Einzel- &amp; Schullizenz</a><a href="/kontakt.html">Kontakt &amp; Schulbestellung</a><a href="https://www.instagram.com/diebildungsmanufaktur">Instagram</a></nav>
+<nav aria-label="Hilfe"><b>Hilfe</b><a href="/meine-materialien.html">Meine Materialien</a><a href="/agb.html#lizenzen">Einzel- &amp; Schullizenz</a><a href="/kontakt.html">Kontakt &amp; Schulbestellung</a><a href="https://www.instagram.com/diebildungsmanufaktur">Instagram</a></nav>
 </div>
 <div class="wrap bottom"><span>© 2026 Bildungsmanufaktur · Lukas Jaskolka</span><span>Alle Preise sind Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</span></div>
 </footer>
@@ -123,6 +123,14 @@ FOOT = '''</main>
 </html>
 '''
 FOOT = FOOT.replace('{VER}', VER)
+
+
+NL_HINWEIS = 'Mit der Anmeldung willigst du ein, den Newsletter per E-Mail zu bekommen. Du erhältst zuerst eine Bestätigungs-Mail (Double-Opt-in). Versand über Brevo, Details in der <a href="/datenschutz.html">Datenschutzerklärung</a>. Jederzeit abbestellbar.'
+def nl_form(btn='Anmelden'):
+    return f'''<form class="nl-form" data-nl><input type="email" name="email" placeholder="deine@e-mail.de" autocomplete="email" required aria-label="E-Mail-Adresse"><input type="text" name="website" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px"><button class="btn green" type="submit">{btn}</button></form>
+<p class="nl-hinweis" style="font-size:13px;margin-top:8px">{NL_HINWEIS}</p><p data-nl-ok role="status" style="display:none;font-weight:700"></p>'''
+def nl_box(titel='Lust auf mehr Gratis-Material?', text='Neue Freebies, Saisonmaterial und Rabatte zuerst – etwa einmal im Monat.'):
+    return f'''<div class="box banner dots" style="background-color:var(--tuerkis);margin-top:28px;text-align:left"><img src="/assets/img/daumen.webp" alt="" width="120" style="flex:0 0 auto"><div class="txt"><h2 style="font-size:26px">{titel}</h2><p class="lead">{text}</p>{nl_form()}</div></div>'''
 
 
 def page(path, title, desc, body, active='', extra=''):
@@ -229,10 +237,7 @@ body = f'''<section class="hero dots"><div class="wrap">
 <img src="/assets/img/daumen.webp" alt="" width="170" style="flex:0 0 auto">
 <div class="txt"><h2>Gratis-Material direkt ins Postfach</h2>
 <p class="lead">Neue Freebies, Saisonmaterial und Rabatte zuerst – etwa einmal im Monat, jederzeit abbestellbar.</p>
-<form class="nl-form" id="nl-form"><label class="visually-hidden" for="nl">E-Mail-Adresse</label><input id="nl" name="email" type="email" placeholder="deine@e-mail.de" autocomplete="email" required><input type="text" name="website" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px"><button class="btn green" type="submit">Anmelden</button></form>
-<p class="nl-hinweis" style="font-size:13px;margin-top:8px">Mit der Anmeldung willigst du ein, den Newsletter per E-Mail zu bekommen. Du erhältst zuerst eine Bestätigungs-Mail (Double-Opt-in). Versand über Brevo, Details in der <a href="/datenschutz.html">Datenschutzerklärung</a>.</p>
-<p id="nl-ok" role="status" style="display:none;font-weight:700"></p>
-<script>document.getElementById('nl-form').addEventListener('submit',function(e){{e.preventDefault();var f=e.target,o=document.getElementById('nl-ok'),b=f.querySelector('button');b.disabled=true;fetch('/api/newsletter',{{method:'POST',headers:{{'content-type':'application/json'}},body:JSON.stringify({{email:f.email.value,website:f.website.value}})}}).then(function(r){{return r.json();}}).then(function(d){{o.style.display='block';if(d.ok){{f.style.display='none';o.textContent='Fast geschafft! Bitte schau in dein Postfach (auch im Spam-Ordner) und bestätige die Anmeldung.';}}else{{b.disabled=false;o.textContent=d.fehler||'Das hat nicht geklappt.';}}}}).catch(function(){{b.disabled=false;o.style.display='block';o.textContent='Das hat nicht geklappt. Bitte versuch es später noch einmal.';}});}});</script>
+{nl_form()}
 </div></div></div></section>
 
 <section class="sec" id="ueber"><div class="wrap about">
@@ -311,7 +316,7 @@ for m in P:
     elif m['eduki'] in PAKETE:
         probe = '<div class="vorschau-hinweis"><span class="muted">Wische durch die Deckblätter aller enthaltenen Materialien.</span></div>'
     if m['gratis']:
-        kauf = f'<div class="info-box"><b>Kostenlos</b>Einfach herunterladen und loslegen – ohne Anmeldung.</div><p><a class="btn green" href="https://bm-downloads.lukas-jaskolka.workers.dev/gratis/{m["eduki"]}" rel="nofollow">Gratis herunterladen</a></p>'
+        kauf = f'<div class="info-box"><b>Kostenlos</b>Einfach herunterladen und loslegen – ohne Anmeldung.</div><p><a class="btn green" href="https://bm-downloads.lukas-jaskolka.workers.dev/gratis/{m["eduki"]}" rel="nofollow">Gratis herunterladen</a></p><div class="info-box" style="margin-top:14px"><b>Mehr davon?</b>Hol dir neue Freebies direkt ins Postfach.{nl_form()}</div>'
     else:
         kauf = f'''<fieldset class="lic"><legend>Lizenz wählen</legend>
 <label><input type="radio" name="lizenz" value="Einzellizenz" checked><span><span class="n">Einzellizenz</span><span class="d">Für dich und deine eigenen Klassen</span></span><span class="p">{euro(m["preis"])}</span></label>
@@ -400,6 +405,7 @@ legal('datenschutz.html', 'Datenschutzerklärung', '''<h3>1. Verantwortlicher</h
 <p><b>Zahlung:</b> Die Bezahlung wickelt Stripe Payments Europe Ltd. (Irland) ab. Dafür werden deine Zahlungs- und Bestelldaten an Stripe übermittelt; Kartendaten gibst du direkt bei Stripe ein, sie erreichen mich nicht. Stripe kann Daten auch in die USA übertragen (EU-US Data Privacy Framework, Standardvertragsklauseln). Wählst du PayPal, wird PayPal (Europe) S.à r.l. et Cie, S.C.A. (Luxemburg) eingebunden.</p>
 <p><b>Download:</b> Die Dateien liegen in einem Speicher von Cloudflare, Inc. (USA). Beim Herunterladen werden technisch nötige Daten (IP-Adresse, Zeitpunkt, Download-Link) verarbeitet; der Link prüft bei Stripe, ob die Bestellung bezahlt ist (Art. 6 Abs. 1 lit. b DSGVO). Cloudflare ist unter dem EU-US Data Privacy Framework zertifiziert.</p>
 <p><b>E-Mails zur Bestellung:</b> Den Download-Link und Eingangsbestätigungen (z. B. beim Widerruf) verschicke ich über Brevo (Sendinblue GmbH, Berlin) an die von dir angegebene E-Mail-Adresse (Art. 6 Abs. 1 lit. b und c DSGVO).</p>
+<p><b>Meine Materialien und Update-Hinweise:</b> Damit du gekaufte Materialien jederzeit erneut herunterladen kannst, werden deine Käufe anhand deiner E-Mail-Adresse bei Stripe abgefragt; der Zugang erfolgt über einen Link per E-Mail, der 7 Tage gilt. Außerdem speichere ich deine E-Mail-Adresse und die gekauften Materialien bei Brevo, um dich zu informieren, wenn ein gekauftes Material aktualisiert wird (Art. 6 Abs. 1 lit. b DSGVO – Bereitstellung des gekauften digitalen Inhalts). Diese Hinweise sind keine Werbung; du kannst ihnen jederzeit per E-Mail an kontakt@bildungsmanufaktur.shop widersprechen.</p>
 <h3>4a. Widerruf über die Website</h3><p>Nutzt du die Funktion „Vertrag widerrufen“, verarbeite ich Name, Angaben zum Vertrag und E-Mail-Adresse, um den Widerruf zu bearbeiten und dir den Eingang zu bestätigen (Art. 6 Abs. 1 lit. c DSGVO i. V. m. § 356a BGB).</p>
 <h3>5. Newsletter</h3><p>Für den Newsletter brauche ich deine E-Mail-Adresse und deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die per Bestätigungs-E-Mail eingeholt wird (Double-Opt-in). Zum Nachweis der Einwilligung werden Zeitpunkt der Anmeldung und Bestätigung gespeichert. Das Anmeldeformular und der Versand laufen über Brevo (Sendinblue GmbH, Köpenicker Str. 126, 10179 Berlin), mit der ich einen Auftragsverarbeitungsvertrag habe; die Daten werden in der EU verarbeitet. Brevo kann auswerten, ob ein Newsletter geöffnet und welche Links geklickt wurden. Abmelden geht jederzeit über den Link in jedem Newsletter oder per E-Mail an kontakt@bildungsmanufaktur.shop.</p>
 <h3>6. Schriften und Cookies</h3><p>Alle Schriften werden lokal von diesem Server geladen. Es werden keine Tracking- oder Werbe-Cookies eingesetzt.</p>
@@ -461,13 +467,30 @@ body = '''<div class="wrap legal" style="text-align:center"><img src="/assets/im
 <h1 style="margin:14px 0">Danke für deine Bestellung!</h1>
 <p class="lead" data-danke>Deine Zahlung ist eingegangen. Hier geht es direkt zu deinen Dateien:</p>
 <p><a class="btn green" data-dl href="#" style="font-size:20px">Zu deinen Downloads</a></p>
-<p class="small muted">Der Link gilt 30 Tage. Speichere ihn dir am besten als Lesezeichen. Die Rechnung kommt per E-Mail.</p>
+<p class="small muted">Der Link bleibt gültig – und unter <a href="/meine-materialien.html">Meine Materialien</a> kannst du alle deine Käufe jederzeit wieder herunterladen. Die Rechnung kommt per E-Mail.</p>
 <p class="small muted">Keine Mail da? Schau bitte im Spam-Ordner nach oder schreib an <a href="mailto:kontakt@bildungsmanufaktur.shop">kontakt@bildungsmanufaktur.shop</a>.</p>
-<p style="margin-top:20px"><a class="btn" href="/materialien.html">Weiter stöbern</a></p></div>
+<p style="margin-top:20px"><a class="btn" href="/materialien.html">Weiter stöbern</a></p>''' + nl_box('Neues Material zuerst erfahren?', 'Melde dich zum Newsletter an: neue Freebies, Saisonmaterial und Rabatte – etwa einmal im Monat.') + '''</div>
 <script>try{localStorage.removeItem('bm-warenkorb')}catch(e){}
 var sid=new URLSearchParams(location.search).get('session_id');var a=document.querySelector('[data-dl]');
 if(sid&&/^cs_(test|live)_[A-Za-z0-9]+$/.test(sid)){a.href='https://bm-downloads.lukas-jaskolka.workers.dev/d/'+sid;}else{a.parentNode.style.display='none';}</script>'''
 page('danke.html', 'Danke für deine Bestellung', 'Bestellung abgeschlossen', body)
+body = '''<div class="wrap legal" style="text-align:center"><img src="/assets/img/liest.webp" alt="" width="140">
+<h1 style="margin:14px 0">Meine Materialien</h1>
+<p class="lead">Hier findest du alles, was du bei der Bildungsmanufaktur gekauft hast – jederzeit zum erneuten Herunterladen, auch wenn ich ein Material aktualisiert habe.</p>
+<form class="box form" data-konto style="max-width:520px;margin:24px auto;text-align:left">
+<label for="ke">E-Mail-Adresse, mit der du gekauft hast</label><input id="ke" name="email" type="email" autocomplete="email" required>
+<button type="submit" class="btn" style="align-self:flex-start">Zugangslink schicken</button>
+<p class="small muted" style="margin:0" data-konto-msg>Kein Passwort nötig: Du bekommst einen Link per E-Mail, der 7 Tage gilt.</p>
+</form></div>
+<script>(function(){var f=document.querySelector('[data-konto]'),m=document.querySelector('[data-konto-msg]');
+f.addEventListener('submit',function(e){e.preventDefault();var b=f.querySelector('button');b.disabled=true;b.textContent='Wird gesendet …';
+fetch('/api/konto',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:f.email.value})})
+.then(function(r){return r.json();}).then(function(d){if(!d.ok)throw new Error(d.fehler||'Fehler');f.innerHTML='<h3 style="margin:0">Schau in dein Postfach!</h3><p style="margin-bottom:0">Wenn es zu dieser Adresse Käufe gibt, ist der Zugangslink jetzt unterwegs (bitte auch im Spam-Ordner nachsehen).</p>';})
+.catch(function(err){b.disabled=false;b.textContent='Zugangslink schicken';m.style.color='#C0392B';m.textContent='Das hat nicht geklappt. Bitte versuch es gleich noch einmal oder schreib an kontakt@bildungsmanufaktur.shop.';});});})();</script>'''
+page('meine-materialien.html', 'Meine Materialien', 'Alle gekauften Materialien jederzeit erneut herunterladen.', body)
+body = '<div class="wrap legal" style="text-align:center"><img src="/assets/img/daumen.webp" alt="" width="150"><h1 style="margin:14px 0">Newsletter</h1><p class="lead">Neue Freebies, Saisonmaterial und Rabatte zuerst – etwa einmal im Monat, jederzeit abbestellbar.</p><div style="max-width:520px;margin:auto;text-align:left">' + nl_form() + '</div></div>'
+page('newsletter.html', 'Newsletter', 'Newsletter der Bildungsmanufaktur', body)
+
 body = '''<div class="wrap legal" style="text-align:center"><img src="/assets/img/daumen.webp" alt="" width="150">
 <h1 style="margin:14px 0">Anmeldung bestätigt!</h1>
 <p class="lead">Danke! Ab jetzt bekommst du neue Freebies, Saisonmaterial und Rabatte zuerst ins Postfach.</p>

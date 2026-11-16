@@ -98,6 +98,19 @@
   }
 
 
+  // Newsletter-Formulare (Startseite, Danke-Seite, Gratis-Material, Newsletter-Seite)
+  document.querySelectorAll('[data-nl]').forEach(function (f) {
+    var o = f.parentNode.querySelector('[data-nl-ok]');
+    var pe = new URLSearchParams(location.search).get('email'); if (pe && f.email) f.email.value = pe;
+    f.addEventListener('submit', function (e) {
+      e.preventDefault(); var b = f.querySelector('button'); b.disabled = true;
+      fetch('/api/newsletter', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email.value, website: f.website.value }) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) { o.style.display = 'block'; if (d.ok) { f.style.display = 'none'; o.textContent = 'Fast geschafft! Bitte schau in dein Postfach (auch im Spam-Ordner) und bestätige die Anmeldung.'; } else { b.disabled = false; o.textContent = d.fehler || 'Das hat nicht geklappt.'; } })
+        .catch(function () { b.disabled = false; o.style.display = 'block'; o.textContent = 'Das hat nicht geklappt. Bitte versuch es später noch einmal.'; });
+    });
+  });
+
   // Handy: Lupe öffnet das Suchfeld im Kopf
   var sb = document.querySelector('[data-suche]');
   if (sb) sb.addEventListener('click', function () {
