@@ -9,6 +9,8 @@ LOKAL = {  # eigene, schärfere Deckblätter, wo vorhanden
     '2437611': 'weihnachtspaket.jpg', '2437605': 'wissenspaket.jpg', '2437941': 'advent.jpg', '2437586': 'escape.jpg',
     '2438000': 'wintersuchsel.jpg', '1965098': 'waldtiere.jpg', '2441767': 'tierewelt.jpg', '2441758': 'tierebeiuns.jpg',
     '2437963': 'silvester.jpg',
+    '2436197': 'merkspiel.jpg', '2436182': 'schattenbilder.jpg', '2435973': 'wimmelbilder.jpg', '1993749': 'hummel.jpg',
+    '1938314': 'bauernhof.jpg', '2442509': 'speedmeeting.jpg',
 }
 
 # Stufe, wo der Titel sie nicht verrät (abgeleitet aus Reihe/Paket)
@@ -19,6 +21,33 @@ STUFE_FIX = {
     '2437527': '5–10', '2440135': '5–10', '2440140': '5–10', '2437941': '1–6', '2440153': '1–6', '2018260': '1–6',
     '2037029': '1–6', '2437430': '1–6', '2437429': '1–6', '2436306': '1–6', '2436270': '1–6', '2436291': '1–6',
 }
+# Neu 16.11.: Fach, Stufe und Art fest zugeordnet (Titel allein reichen nicht)
+FIX = {
+    '2442492': ('Kunst & Basteln', '1–6', 'Spiele'), '2442509': ('Klassenleben', '5–8', 'Spiele'),
+    '2442518': ('Kunst & Basteln', '1–6', 'Spiele'), '2442532': ('Klassenleben', '3–10', 'Arbeitsblätter'),
+    '2442553': ('Kunst & Basteln', '1–4', 'Basteln & Deko'), '2442563': ('Deutsch', '2–6', 'Spiele'),
+    '2443125': ('Klassenleben', '5', 'Arbeitsheft'), '2443144': ('Klassenleben', '6', 'Arbeitsheft'),
+    '2443160': ('Klassenleben', '8', 'Arbeitsheft'), '2443163': ('Klassenleben', '9', 'Arbeitsheft'),
+    '2444207': ('Klassenleben', '5/6', 'Sparpaket'), '2444217': ('Klassenleben', '8/9', 'Sparpaket'),
+    '2443354': ('Verbraucherbildung', '7/8', 'Arbeitsheft'), '2444416': ('Verbraucherbildung', '7', 'Arbeitsblätter'),
+    '2444204': ('Verbraucherbildung', '7/8', 'Arbeitsheft'), '2444259': ('Verbraucherbildung', '7/8', 'Arbeitsheft'),
+    '2444283': ('Verbraucherbildung', '7/8', 'Arbeitsheft'), '2444327': ('Ernährung & Gesundheit', '7/8', 'Arbeitsheft'),
+    '2444367': ('Ernährung & Gesundheit', '7/8', 'Arbeitsheft'), '2444477': ('Deutsch', '7/8', 'Arbeitsheft'),
+    '2444640': ('Ernährung & Gesundheit', '9/10', 'Arbeitsheft'), '2444665': ('Ernährung & Gesundheit', '9/10', 'Arbeitsheft'),
+    '2444719': ('Sport', '5–7', 'Rätsel'), '2444756': ('Sport', '5–7', 'Rätsel'), '2444783': ('Sport', '5–7', 'Rätsel'),
+    '2444802': ('Sport', '5–7', 'Rätsel'), '2444824': ('Sport', '5–7', 'Rätsel'),
+    '2445422': ('Kunst & Basteln', '1–4', 'Basteln & Deko'), '2445443': ('Kunst & Basteln', '1–10', 'Basteln & Deko'),
+    '2445467': ('Weltkunde & Geschichte', '5/6', 'Arbeitsheft'),
+    '2445952': ('Verbraucherbildung', '5/6', 'Arbeitsheft'), '2445958': ('Verbraucherbildung', '5/6', 'Arbeitsheft'),
+    '2445962': ('Verbraucherbildung', '5/6', 'Arbeitsheft'), '2445964': ('Verbraucherbildung', '5/6', 'Arbeitsheft'),
+    '2445984': ('Kunst & Basteln', '1–4', 'Ausmalbilder'), '2445992': ('Kunst & Basteln', '1–4', 'Ausmalbilder'),
+    '2445991': ('Rätsel & Spiele', '1–4', 'Rätsel'), '2445997': ('Kunst & Basteln', '1–4', 'Ausmalbilder'),
+    '2446006': ('Klassenleben', '5/6', 'Arbeitsblätter'), '2446009': ('Mathematik', '1/2', 'Rätsel'),
+    '2446017': ('Mathematik', '1/2', 'Arbeitsblätter'), '2446014': ('Deutsch', '2–4', 'Basteln & Deko'),
+    '2446026': ('Deutsch', '2–4', 'Rätsel'), '2446028': ('Deutsch', '2–4', 'Rätsel'),
+    '2446030': ('Englisch', '5/6', 'Arbeitsblätter'),
+}
+STUFE_FIX.update({k: v[1] for k, v in FIX.items()})
 SEK_REIHEN = ('Erste eigene Wohnung', 'Versicherungen', 'Endlich 18', 'Werbung', 'Führerschein', 'Ausbildung')
 
 FACH_REGELN = [
@@ -92,6 +121,7 @@ def laden():
         stufe, st = stufe_von(eid, titel)
         seiten = int(re.match(r'\d+', umfang).group()) if 'Seite' in umfang else 0
         art = art_von(titel, umfang, seiten, fach)
+        if eid in FIX: fach, art = FIX[eid][0], FIX[eid][2]
         slug = slugify(re.sub(r'\s*\|\s*Grundschule$', '', titel))
         while slug in slugs: slug += '-2'
         slugs.add(slug)
