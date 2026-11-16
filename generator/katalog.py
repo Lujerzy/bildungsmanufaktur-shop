@@ -11,6 +11,7 @@ LOKAL = {  # eigene, schärfere Deckblätter, wo vorhanden
     '2437963': 'silvester.jpg',
     '2436197': 'merkspiel.jpg', '2436182': 'schattenbilder.jpg', '2435973': 'wimmelbilder.jpg', '1993749': 'hummel.jpg',
     '1938314': 'bauernhof.jpg', '2442509': 'speedmeeting.jpg',
+    '2444344': '2444344.jpg', '2444235': '2444235.jpg', '2444602': '2444602.jpg', '2444619': '2444619.jpg', '2444685': '2444685.jpg', '2445521': '2445521.jpg', '2444389': '2444389.jpg', '2443151': '2443151.jpg', '2438924': '2438924.jpg', '2442036': '2442036.jpg', '2442069': '2442069.jpg', '2442083': '2442083.jpg',
 }
 
 # Stufe, wo der Titel sie nicht verrät (abgeleitet aus Reihe/Paket)
@@ -46,6 +47,19 @@ FIX = {
     '2446017': ('Mathematik', '1/2', 'Arbeitsblätter'), '2446014': ('Deutsch', '2–4', 'Basteln & Deko'),
     '2446026': ('Deutsch', '2–4', 'Rätsel'), '2446028': ('Deutsch', '2–4', 'Rätsel'),
     '2446030': ('Englisch', '5/6', 'Arbeitsblätter'),
+    # in Prüfung bei eduki (16.11.), eigene Deckblätter
+    '2444344': ('Ernährung & Gesundheit', '7/8', 'Arbeitsheft'),
+    '2444235': ('Verbraucherbildung', '7/8', 'Arbeitsheft'),
+    '2444602': ('Ernährung & Gesundheit', '9/10', 'Arbeitsheft'),
+    '2444619': ('Ernährung & Gesundheit', '9/10', 'Arbeitsheft'),
+    '2444685': ('Ernährung & Gesundheit', '9/10', 'Arbeitsheft'),
+    '2445521': ('Ernährung & Gesundheit', '7/8', 'Arbeitsheft'),
+    '2444389': ('Verbraucherbildung', '9/10', 'Arbeitsheft'),
+    '2443151': ('Klassenleben', '7', 'Arbeitsheft'),
+    '2438924': ('Verbraucherbildung', '9/10', 'Arbeitsheft'),
+    '2442036': ('Weltkunde & Geschichte', '7/8', 'Arbeitsblätter'),
+    '2442069': ('Weltkunde & Geschichte', '5/6', 'Arbeitsblätter'),
+    '2442083': ('Weltkunde & Geschichte', '3/4', 'Arbeitsblätter'),
 }
 STUFE_FIX.update({k: v[1] for k, v in FIX.items()})
 SEK_REIHEN = ('Erste eigene Wohnung', 'Versicherungen', 'Endlich 18', 'Werbung', 'Führerschein', 'Ausbildung')

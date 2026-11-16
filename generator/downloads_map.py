@@ -127,4 +127,17 @@ MAP = {
  '2446006': ('KR1 – Klassenregeln', None, 1), '2446009': ('MA2 – Verliebte', None, 1), '2446017': ('MA3 – Verliebte', None, 1),
  '2446014': ('D1 – Märchen-Lapbook', None, 1), '2446026': ('DE1 – Märchen', None, 1), '2446028': ('DE2 – Märchen', None, 1),
  '2446030': ('EN1 – Present', None, 1),
+ # In Prüfung bei eduki (16.11.)
+ '2444344': ('Stress lass nach! (Reihe) ✅ online/Modul 2', None, 1),
+ '2444235': ('Modul 2 – Gefiltert schön', None, 1),
+ '2444602': ('Fit & gut ernährt ✅ online/Modul 1', None, 1),
+ '2444619': ('Fit & gut ernährt ✅ online/Modul 2', None, 1),
+ '2444685': ('Fit & gut ernährt ✅ online/Modul 5', None, 1),
+ '2445521': ('Food-Profi', None, 1),
+ '2444389': ('Geld & Schulden/Klasse 9-10/Modul 3', None, 1),
+ '2443151': ('Notfallmappe Klasse 7', None, 1),
+ '2438924': ('Versicherungen/Klasse 9-10/Modul 2', None, 1),
+ '2442036': ('J2 – Silvester', None, 1),
+ '2442069': ('M15 – Silvester', None, 1),
+ '2442083': ('G25 – Silvester', None, 1),
 }

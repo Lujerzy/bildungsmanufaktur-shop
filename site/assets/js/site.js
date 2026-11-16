@@ -78,16 +78,56 @@
     anwenden();
   }
 
-  // Produkt-Galerie
-  var main = document.querySelector('[data-main]');
-  if (main) {
-    document.querySelectorAll('[data-thumb]').forEach(function (t) {
-      t.addEventListener('click', function () {
-        main.src = t.dataset.thumb; main.alt = t.getAttribute('aria-label');
-        document.querySelectorAll('[data-thumb]').forEach(function (x) { x.setAttribute('aria-pressed', x === t ? 'true' : 'false'); });
+  // Produkt-Galerie: wischen (Handy), Pfeile + automatisches Weiterblättern (PC)
+  var track = document.querySelector('[data-track]');
+  if (track) {
+    var slides = [].slice.call(track.children), thumbs = [].slice.call(document.querySelectorAll('[data-thumb]'));
+    var dots = document.querySelector('[data-dots]'), idx = 0, timer = null, stop = false;
+    if (dots && slides.length > 1) slides.forEach(function (_, i) { var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Bild ' + (i + 1)); b.onclick = function () { stop = true; geh(i); }; dots.appendChild(b); });
+    function markiere(i) {
+      idx = i;
+      thumbs.forEach(function (t, j) { t.setAttribute('aria-pressed', j === i ? 'true' : 'false'); });
+      if (dots) [].forEach.call(dots.children, function (d, j) { d.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+      var z = document.querySelector('[data-zaehler]'); if (z) z.textContent = (i + 1) + ' / ' + slides.length;
+    }
+    function geh(i) { i = (i + slides.length) % slides.length; track.scrollTo({ left: slides[i].offsetLeft - track.offsetLeft, behavior: 'smooth' }); markiere(i); }
+    var t0; track.addEventListener('scroll', function () { clearTimeout(t0); t0 = setTimeout(function () { markiere(Math.round(track.scrollLeft / track.clientWidth)); }, 80); });
+    thumbs.forEach(function (t, j) { t.addEventListener('click', function () { stop = true; geh(j); }); });
+    var pv = document.querySelector('[data-prev]'), nx = document.querySelector('[data-next]');
+    if (pv) pv.onclick = function () { stop = true; geh(idx - 1); };
+    if (nx) nx.onclick = function () { stop = true; geh(idx + 1); };
+    track.addEventListener('pointerdown', function () { stop = true; });
+    var pc = window.matchMedia('(hover:hover) and (min-width:900px)').matches, ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (pc && !ruhig && slides.length > 1) {
+      var box = track.closest('.slider'), pause = false;
+      box.addEventListener('mouseenter', function () { pause = true; }); box.addEventListener('mouseleave', function () { pause = false; });
+      timer = setInterval(function () { if (!stop && !pause && !document.hidden) geh(idx + 1); }, 3500);
+    }
+    markiere(0);
+  }
+
+  // Probeseite als PDF (Bild mit Wasserzeichen in eine A4-Seite)
+  document.querySelectorAll('[data-probe]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var url = b.dataset.probe, name = b.dataset.name || 'Probeseite';
+      Promise.all([fetch(url).then(function (r) { return r.arrayBuffer(); }), new Promise(function (ok) { var im = new Image(); im.onload = function () { ok(im); }; im.src = url; })]).then(function (r) {
+        var jpg = new Uint8Array(r[0]), w = r[1].naturalWidth, h = r[1].naturalHeight;
+        var PW = 595.28, PH = 841.89, sc = Math.min(PW / w, PH / h), dw = w * sc, dh = h * sc, dx = (PW - dw) / 2, dy = (PH - dh) / 2;
+        var inhalt = 'q ' + dw.toFixed(2) + ' 0 0 ' + dh.toFixed(2) + ' ' + dx.toFixed(2) + ' ' + dy.toFixed(2) + ' cm /Im1 Do Q';
+        var enc = new TextEncoder(), teile = [], off = [], len = 0;
+        function add(x) { var u = typeof x === 'string' ? enc.encode(x) : x; teile.push(u); len += u.length; }
+        add('%PDF-1.4\n');
+        var objs = ['<< /Type /Catalog /Pages 2 0 R >>', '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+          '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + PW + ' ' + PH + '] /Resources << /XObject << /Im1 4 0 R >> >> /Contents 5 0 R >>'];
+        objs.forEach(function (o, i) { off.push(len); add((i + 1) + ' 0 obj\n' + o + '\nendobj\n'); });
+        off.push(len); add('4 0 obj\n<< /Type /XObject /Subtype /Image /Width ' + w + ' /Height ' + h + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + jpg.length + ' >>\nstream\n'); add(jpg); add('\nendstream\nendobj\n');
+        off.push(len); add('5 0 obj\n<< /Length ' + inhalt.length + ' >>\nstream\n' + inhalt + '\nendstream\nendobj\n');
+        var xref = len, x = 'xref\n0 6\n0000000000 65535 f \n' + off.map(function (o) { return ('0000000000' + o).slice(-10) + ' 00000 n \n'; }).join('');
+        add(x + 'trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n' + xref + '\n%%EOF');
+        var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(teile, { type: 'application/pdf' })); a.download = name + '_Probeseite.pdf'; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
       });
     });
-  }
+  });
 
   // Warenkorb-Seite
   var list = document.querySelector('[data-cart]');

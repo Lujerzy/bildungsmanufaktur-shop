@@ -274,14 +274,28 @@ FAQ = [('Wie bekomme ich das Material?', 'Direkt nach der Bezahlung erscheint de
        ('Was ist der Unterschied zwischen Einzel- und Schullizenz?', 'Mit der Einzellizenz nutzt du das Material für deine eigenen Klassen. Die Schullizenz gilt für alle Lehrkräfte einer Schule – ideal für Fachschaften.'),
        ('Kann meine Schule auf Rechnung kaufen?', 'Ja. Schreib mir kurz mit Schulname und Rechnungsadresse, dann bekommst du eine Rechnung zum Überweisen.')]
 
+PAKETE = json.load(open(os.path.join(os.path.dirname(OUT), 'cloudflare', 'pakete.json'), encoding='utf-8'))
 for m in P:
     x = VS_EXTRA if m['eduki'] == '2425910' else None
-    bilder = [('/assets/img/' + f, l) for f, l in x['bilder']] if x else [(m['src'], 'Deckblatt')]
+    bilder = [(m['src'], 'Deckblatt')]
+    vdir = os.path.join(OUT, 'assets', 'vorschau', m['eduki'])
+    vor = sorted(f for f in os.listdir(vdir) if f.endswith('.jpg')) if os.path.isdir(vdir) else []
+    bilder += [(f"/assets/vorschau/{m['eduki']}/{f}", f'Vorschau Seite {i}') for i, f in enumerate(vor, 1)]
+    if m['eduki'] in PAKETE:
+        bilder += [(BY[k]['src'], 'Enthalten: ' + BY[k]['titel']) for k in PAKETE[m['eduki']] if k in BY]
     thumbs = ''
     if len(bilder) > 1:
         thumbs = '<div class="thumbs" role="group" aria-label="Vorschauseiten">' + ''.join(
-            f'<button type="button" data-thumb="{f}" aria-label="{E(l)}" aria-pressed="{"true" if i == 0 else "false"}"><img src="{f}" alt="" loading="lazy"></button>'
-            for i, (f, l) in enumerate(bilder)) + '</div>'
+            f'<button type="button" data-thumb aria-label="{E(l)}" aria-pressed="{"true" if i == 0 else "false"}"><img src="{f}" alt="" loading="lazy"></button>'
+            for i, (f, l) in enumerate(bilder[:6])) + '</div>'
+    lazy = ' loading="lazy"'
+    slides = ''.join(f'<figure class="slide"><img src="{f}" alt="{E(l)} – {E(m["titel"])}"{lazy if i else ""}></figure>' for i, (f, l) in enumerate(bilder))
+    nav = '<button type="button" class="nav l" data-prev aria-label="Vorheriges Bild">‹</button><button type="button" class="nav r" data-next aria-label="Nächstes Bild">›</button><span class="zaehler" data-zaehler></span><div class="dots" data-dots></div>' if len(bilder) > 1 else ''
+    probe = ''
+    if vor:
+        probe = f'<div class="vorschau-hinweis"><span class="muted">Vorschauseiten mit Wasserzeichen – im gekauften Material natürlich ohne.</span><button type="button" class="btn small" data-probe="/assets/vorschau/{m["eduki"]}/{vor[0]}" data-name="{E(m["id"])}">Probeseite als PDF</button></div>'
+    elif m['eduki'] in PAKETE:
+        probe = '<div class="vorschau-hinweis"><span class="muted">Wische durch die Deckblätter aller enthaltenen Materialien.</span></div>'
     if m['gratis']:
         kauf = f'<div class="info-box"><b>Kostenlos</b>Einfach herunterladen und loslegen – ohne Anmeldung.</div><p><a class="btn green" href="https://bm-downloads.lukas-jaskolka.workers.dev/gratis/{m["eduki"]}" rel="nofollow">Gratis herunterladen</a></p>'
     else:
@@ -303,7 +317,7 @@ for m in P:
     faq = ''.join(f'<details class="faq"><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in FAQ)
     body = f'''<div class="wrap" style="padding-top:24px"><nav class="crumbs" aria-label="Brotkrumen"><a href="/">Start</a> › <a href="/materialien.html">Materialien</a> › <a href="/materialien.html?fach={E(m['fach'])}">{E(m['fach'])}</a> › <span>{E(m['titel'])}</span></nav></div>
 <div class="wrap product">
-<div class="gallery"><div class="box main" style="background:{m['tint']}"><img data-main src="{bilder[0][0]}" alt="{E(bilder[0][1])} {E(m['titel'])}"></div>{thumbs}</div>
+<div class="gallery"><div class="box main slider" style="background:{m['tint']}"><div class="track" data-track>{slides}</div>{nav}</div>{thumbs}{probe}</div>
 <div class="info">
 <div><span class="chip">{m['stufe']}</span> <span class="chip t">{E(m['fach'])}</span> <span class="chip l">{m['art']}</span> <span class="chip">{m['umfang']}</span></div>
 <h1>{E(m['titel'])}</h1>
