@@ -58,6 +58,7 @@ export default {
   async fetch(req, env) {
     const url = new URL(req.url);
     const teile = url.pathname.split('/').filter(Boolean);
+    if (teile[0] === 'api' && teile[1]) return api(req, env, teile[1]);
     if (teile[0] === 'd' && teile[1]) {
       const s = await sitzung(env, teile[1]);
       if (!s) return seite('Nicht gefunden', '<h1>Dieser Download-Link ist ungültig.</h1><p>Bitte prüfe den Link aus deiner E-Mail oder schreib mir.</p>', 404);

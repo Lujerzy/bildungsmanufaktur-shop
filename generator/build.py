@@ -536,4 +536,12 @@ open(os.path.join(os.path.dirname(OUT), 'netlify.toml'), 'w').write('''[build]
   [headers.values]
     Cache-Control = "public, max-age=604800"
 ''')
+open(os.path.join(OUT, '_headers'), 'w').write('''/*
+  X-Robots-Tag: noindex, nofollow
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/assets/img/*
+  Cache-Control: public, max-age=604800
+''')
 print('fertig:', sum(len(f) for _, _, f in os.walk(OUT)), 'Dateien')
