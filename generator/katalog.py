@@ -62,6 +62,9 @@ FIX = {
     '2442083': ('Weltkunde & Geschichte', '3/4', 'Arbeitsblätter'),
 }
 STUFE_FIX.update({k: v[1] for k, v in FIX.items()})
+# Nicht mehr im Shop anzeigen (bei eduki offline, 16.11.) – Dateien bleiben für ältere Pakete erhalten
+VERSTECKT = {'1949562', '1958321', '1938314', '1947137', '1942516'}
+
 SEK_REIHEN = ('Erste eigene Wohnung', 'Versicherungen', 'Endlich 18', 'Werbung', 'Führerschein', 'Ausbildung')
 
 FACH_REGELN = [
@@ -125,11 +128,12 @@ def art_von(t, umfang, seiten, fach):
     return 'Arbeitsblätter'
 
 
-def laden():
+def laden(alle=False):
     P, slugs = [], set()
     for z in open(os.path.join(HIER, 'eduki_katalog.tsv'), encoding='utf-8'):
         if not z.strip(): continue
         eid, titel, umfang, preis, cov = z.rstrip('\n').split('\t')
+        if eid in VERSTECKT and not alle: continue
         preis = float(preis.replace(',', '.'))
         fach = next((f for f, rx in FACH_REGELN if re.search(rx, titel, re.I)), 'Saison & Feste')
         stufe, st = stufe_von(eid, titel)

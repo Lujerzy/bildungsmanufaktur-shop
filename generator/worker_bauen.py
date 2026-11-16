@@ -4,7 +4,7 @@ HIER = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HIER)
 from katalog import laden
 
-P = laden()
+P = laden(alle=True)
 man = {'dateien': {}, 'pakete': json.load(open(os.path.join(HIER, '..', 'cloudflare', 'pakete.json'), encoding='utf-8')),
        'titel': {m['eduki']: m['titel'] for m in P}, 'slug': {m['id']: m['eduki'] for m in P},
        'gratis': [m['eduki'] for m in P if m['gratis']]}
