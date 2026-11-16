@@ -84,6 +84,20 @@
       seite = parseInt(b.dataset.s, 10); anwenden();
       var top = document.querySelector('.results'); if (top) top.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+    var sel = document.querySelector('[data-sort]'), urOrdnung = [].slice.call(grid.children);
+    if (sel) {
+      if (params.get('sort')) sel.value = params.get('sort');
+      sel.addEventListener('change', function () { sortieren(); seite = 1; anwenden(); });
+    }
+    function sortieren() {
+      var v = sel ? sel.value : 'empf', k = urOrdnung.slice();
+      if (v === 'neu') k.sort(function (a, b) { return b.dataset.n - a.dataset.n; });
+      if (v === 'preis-auf') k.sort(function (a, b) { return a.dataset.p - b.dataset.p; });
+      if (v === 'preis-ab') k.sort(function (a, b) { return b.dataset.p - a.dataset.p; });
+      k.forEach(function (c) { grid.appendChild(c); });
+      var u = new URL(location.href); if (v !== 'empf') u.searchParams.set('sort', v); else u.searchParams.delete('sort'); history.replaceState(null, '', u);
+    }
+    if (sel && sel.value !== 'empf') sortieren();
     function anwenden() {
       side.querySelectorAll('.pill').forEach(function (p) {
         var g = p.dataset.g, v = p.dataset.v, on;

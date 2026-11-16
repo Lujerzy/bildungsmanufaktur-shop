@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Erzeugt die statische Shop-Seite der Bildungsmanufaktur nach /home/claude/site."""
-import html, json, os
+import html, json, os, re
 
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'site')
 PREIS_FEHLT = 'Preis folgt'
@@ -163,7 +163,7 @@ def card(m):
     else:
         price = f'<span class="price">{euro(m["preis"])}</span>'
         act = f'<button type="button" class="btn small" data-add="{m["id"]}">In den Warenkorb</button>'
-    return f'''<article class="card" data-tags="{' '.join(tags)}" data-stufe="{m['st']}" data-fach="{E(m['fach'])}" data-art="{m['art']}" data-preis="{'gratis' if m['gratis'] else 'bezahlt'}" data-saison="{'1' if m['saison'] else '0'}">
+    return f'''<article class="card" data-tags="{' '.join(tags)}" data-stufe="{m['st']}" data-fach="{E(m['fach'])}" data-art="{m['art']}" data-preis="{'gratis' if m['gratis'] else 'bezahlt'}" data-saison="{'1' if m['saison'] else '0'}" data-p="{m['preis']}" data-n="{m['eduki']}">
 <a class="pic" href="{url}" style="background:{m['tint']}"><span class="ctrack"><img src="{m['thumb']}" alt="Deckblatt {E(m['titel'])}" loading="lazy" decoding="async">{''.join(f'<img src="{v}" alt="" loading="lazy" decoding="async">' for v in vorschau(m, True))}</span>{b}{'<span class="cdots"></span>' if vorschau(m) else ''}</a>
 <div class="body"><div><span class="chip">{m['stufe']}</span> <span class="chip t">{E(m['fach'])}</span></div>
 <h3><a href="{url}">{E(m['titel'])}</a></h3><p>{E(m['info'])}</p>
@@ -252,6 +252,21 @@ body = f'''<section class="hero dots"><div class="wrap">
 page('index.html', 'Unterrichtsmaterial mit Köpfchen', 'Durchdachte, differenzierte Unterrichtsmaterialien für Klasse 1 bis 13 – sofort als PDF.', body, 'Start')
 
 # ---------------- Materialien ----------------
+# Reihenfolge „Empfohlen“: Highlights, Pakete, Arbeitshefte, aktuelle Saison, Rest nach Preis, Gratis zuletzt
+import datetime as _dt
+_monat = _dt.date.today().month
+_SAISON_JETZT = {11: r'Advent|Weihnacht|Nikolaus|Winter|Silvester|Neujahr|Lebkuchen|Plätzchen', 12: r'Advent|Weihnacht|Nikolaus|Winter|Silvester|Neujahr|Lebkuchen|Plätzchen',
+                 1: r'Winter|Silvester|Neujahr|Schnee', 2: r'Fasching|Karneval|Valentin|Winter', 3: r'Ostern|Frühling', 4: r'Ostern|Frühling', 5: r'Muttertag|Frühling|Sommer',
+                 6: r'Sommer|Vatertag|Ferien', 7: r'Sommer|Ferien', 8: r'Schulstart|Einschulung|Schuljahr', 9: r'Herbst|Schulstart|Schuljahr', 10: r'Herbst|Halloween|Laterne|St\.? Martin'}.get(_monat, r'$^')
+def _rang(m):
+    if m['eduki'] in home_ids: return (0, home_ids.index(m['eduki']))
+    if m['gratis']: return (6, -float(m['preis']))
+    if m['art'] == 'Sparpaket': return (1, -m['preis'])
+    if m['art'] == 'Arbeitsheft': return (2, -m['preis'])
+    if re.search(_SAISON_JETZT, m['titel'], re.I): return (3, -m['preis'])
+    return (4 if m['preis'] >= 3 else 5, -m['preis'])
+EMPFOHLEN = sorted(P, key=_rang)
+
 def opts(g, items):
     return ''.join(f'<button type="button" class="pill" data-g="{g}" data-v="{E(v)}" aria-pressed="false">{E(l)}</button>' for v, l in items)
 
@@ -271,9 +286,9 @@ body = f'''<section class="page-head dots"><div class="wrap"><div class="txt">
 </div></details></aside>
 <div class="results">
 <div class="livesuche"><label class="visually-hidden" for="ls">Materialien durchsuchen</label><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><input id="ls" type="search" data-livesuche placeholder="Suchen: z. B. Weihnachten, Versicherung, Rätsel, Klasse 5" autocomplete="off"></div>
-<p style="margin:0;font-family:Fredoka,sans-serif;font-weight:600;font-size:19px" data-count></p>
+<div class="sortbar"><p style="margin:0;font-family:Fredoka,sans-serif;font-weight:600;font-size:19px" data-count></p><label class="sortwahl">Sortieren: <select data-sort><option value="empf">Empfohlen</option><option value="neu">Neueste zuerst</option><option value="preis-auf">Preis aufsteigend</option><option value="preis-ab">Preis absteigend</option></select></label></div>
 <div class="empty" data-empty hidden><img src="/assets/img/liest.webp" alt=""><div><h2 style="font-size:26px">Hier wird gerade gebaut</h2><p style="margin:0">Für diese Auswahl gibt es noch kein Material – das Angebot wächst jede Woche.</p></div></div>
-<div class="cards" data-grid>{''.join(card(m) for m in P)}</div>
+<div class="cards" data-grid>{''.join(card(m) for m in EMPFOHLEN)}</div>
 </div></div>
 '''
 page('materialien.html', 'Alle Materialien', 'Alle Unterrichtsmaterialien der Bildungsmanufaktur nach Klasse, Fach und Materialart.', body, 'Materialien')

@@ -314,3 +314,7 @@ h1,h2{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
 .pager span{font-weight:700}
 .konto-btn{position:relative;width:48px;height:48px;border-radius:50%;border:2px solid var(--ink);background:var(--tuerkis);box-shadow:3px 3px 0 var(--ink);display:flex;align-items:center;justify-content:center;color:var(--ink)}
 @media (max-width:720px){.pager button{font-size:15px;min-width:40px;height:40px;padding:0 11px}.konto-btn{width:44px;height:44px}}
+
+.sortbar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.sortwahl{font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px}
+.sortwahl select{font:inherit;font-size:15px;padding:8px 12px;border:2px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink)}
