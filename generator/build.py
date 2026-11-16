@@ -99,6 +99,7 @@ def head(title, desc, active=''):
 </nav>
 <div class="head-tools">
 <form action="/materialien.html" role="search"><label class="visually-hidden" for="q">Material suchen</label><input id="q" class="search" type="search" name="q" placeholder="Thema, Fach, Klasse …"></form>
+<button type="button" class="search-btn" data-suche aria-label="Suche öffnen" aria-expanded="false"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button>
 <a class="cart-btn" href="/warenkorb.html" aria-label="Warenkorb"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 11h10.8L21 7H6.2"/><circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg><span class="cart-count" data-n="0">0</span></a>
 </div>
 </div>
@@ -263,6 +264,7 @@ body = f'''<section class="page-head dots"><div class="wrap"><div class="txt">
 <button type="button" class="linkbtn" data-reset>Alle Filter zurücksetzen</button>
 </div></details></aside>
 <div class="results">
+<div class="livesuche"><label class="visually-hidden" for="ls">Materialien durchsuchen</label><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg><input id="ls" type="search" data-livesuche placeholder="Suchen: z. B. Weihnachten, Versicherung, Rätsel, Klasse 5" autocomplete="off"></div>
 <p style="margin:0;font-family:Fredoka,sans-serif;font-weight:600;font-size:19px" data-count></p>
 <div class="empty" data-empty hidden><img src="/assets/img/liest.webp" alt=""><div><h2 style="font-size:26px">Hier wird gerade gebaut</h2><p style="margin:0">Für diese Auswahl gibt es noch kein Material – das Angebot wächst jede Woche.</p></div></div>
 <div class="cards" data-grid>{''.join(card(m) for m in P)}</div>

@@ -44,8 +44,25 @@
     if (params.get('fach')) st.fach.push(params.get('fach'));
     if (params.get('art')) st.art.push(params.get('art'));
     if (params.get('preis')) st.preis = params.get('preis');
-    var q = (params.get('q') || '').trim().toLowerCase();
-    if (q) { var si = document.getElementById('q'); if (si) si.value = params.get('q'); }
+    function norm(t) { return (t || '').toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss').replace(/[–-]/g, ' '); }
+    var KL = { gs: ' klasse 1 2 3 4 grundschule ', sek: ' klasse 5 6 7 8 9 10 sek sekundarstufe ', ober: ' klasse 11 12 13 oberstufe ' };
+    document.querySelectorAll('[data-grid] .card').forEach(function (c) {
+      c._such = norm(c.textContent + ' ' + c.dataset.fach + ' ' + c.dataset.art + ' ' + c.dataset.stufe.split(' ').map(function (x) { return KL[x] || ''; }).join(' ') + (c.dataset.preis === 'gratis' ? ' gratis kostenlos' : '') + (c.dataset.art === 'Sparpaket' ? ' paket bundle' : ''));
+    });
+    var q = (params.get('q') || '').trim();
+    var ls = document.querySelector('[data-livesuche]'), si = document.getElementById('q');
+    if (ls) ls.value = q; if (si) si.value = q;
+    function treffer(c) {
+      if (!q) return true;
+      return norm(q).split(/\s+/).filter(Boolean).every(function (w) { return c._such.indexOf(w) >= 0; });
+    }
+    function suche(v) {
+      q = v.trim(); if (ls && ls.value !== v) ls.value = v; if (si && si.value !== v) si.value = v;
+      var u = new URL(location.href); if (q) u.searchParams.set('q', q); else u.searchParams.delete('q'); history.replaceState(null, '', u);
+      anwenden();
+    }
+    [ls, si].forEach(function (el) { if (el) el.addEventListener('input', function () { suche(el.value); }); });
+    if (si && si.form) si.form.addEventListener('submit', function (e) { e.preventDefault(); suche(si.value); if (ls) ls.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
     function anwenden() {
       side.querySelectorAll('.pill').forEach(function (p) {
         var g = p.dataset.g, v = p.dataset.v, on;
@@ -59,11 +76,13 @@
           (st.fach.length === 0 || st.fach.indexOf(c.dataset.fach) >= 0) &&
           (st.preis === 'alle' || c.dataset.preis === st.preis) &&
           (st.art.length === 0 || st.art.indexOf(c.dataset.art) >= 0) &&
-          (!q || c.textContent.toLowerCase().indexOf(q) >= 0);
+          treffer(c);
         c.hidden = !ok; if (ok) n++;
       });
       document.querySelector('[data-count]').textContent = n === 1 ? '1 Material' : n + ' Materialien';
       document.querySelector('[data-empty]').hidden = n !== 0;
+      var eh = document.querySelector('[data-empty] h2'), ep = document.querySelector('[data-empty] p');
+      if (eh) { eh.textContent = q ? 'Nichts gefunden für „' + q + '“' : 'Hier wird gerade gebaut'; ep.textContent = q ? 'Probier ein anderes Wort – z. B. das Thema, das Fach oder „Klasse 5“. Oder setze die Filter zurück.' : 'Für diese Auswahl gibt es noch kein Material – das Angebot wächst jede Woche.'; }
     }
     side.addEventListener('click', function (ev) {
       var p = ev.target.closest('.pill');
@@ -73,11 +92,19 @@
         else { var i = st[g].indexOf(v); if (i >= 0) st[g].splice(i, 1); else st[g].push(v); }
         anwenden();
       }
-      if (ev.target.closest('[data-reset]')) { st = { stufe: 'alle', preis: 'alle', fach: [], art: [], saison: [] }; q = ''; anwenden(); }
+      if (ev.target.closest('[data-reset]')) { st = { stufe: 'alle', preis: 'alle', fach: [], art: [], saison: [] }; suche(''); }
     });
     anwenden();
   }
 
+
+  // Handy: Lupe öffnet das Suchfeld im Kopf
+  var sb = document.querySelector('[data-suche]');
+  if (sb) sb.addEventListener('click', function () {
+    var h = document.querySelector('.site-head'), auf = h.classList.toggle('suche-offen');
+    sb.setAttribute('aria-expanded', auf ? 'true' : 'false');
+    if (auf) { var f = document.getElementById('q'); if (f) f.focus(); }
+  });
 
   // Material-Karten: durch Deckblatt + Vorschauseiten wischen; am PC beim Drüberfahren automatisch
   document.querySelectorAll('.card .ctrack').forEach(function (tr) {
