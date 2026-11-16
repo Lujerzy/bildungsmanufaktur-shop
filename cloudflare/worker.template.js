@@ -102,6 +102,11 @@ export default {
       const links = (await dateien(env, id)).map((k) => `<a class="btn" href="/gratis/${id}/${encodeURIComponent(k)}">${anzeige(k)}</a>`).join(' ');
       return seite('Gratis-Download', `<h1>${esc(MANIFEST.titel[id] || 'Gratis-Download')}</h1><p>Viel Freude damit!</p><p>${links}</p>${NL}`);
     }
+    if (env.ASSETS && url.hostname !== 'bm-downloads.lukas-jaskolka.workers.dev') {
+      if (url.hostname === 'www.bildungsmanufaktur.shop') return Response.redirect(SHOP + url.pathname + url.search, 301);
+      const nf = await env.ASSETS.fetch(new Request(url.origin + '/404.html'));
+      return new Response(nf.body, { status: 404, headers: nf.headers });
+    }
     return Response.redirect(SHOP, 302);
   },
 };
